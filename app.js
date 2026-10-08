@@ -17,6 +17,9 @@
   const gsearch = (q) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
   const navBtn = (p, mode, label = '導航') =>
     p.lat ? `<a class="navlink" target="_blank" rel="noopener" href="${gmap(p.lat, p.lng, mode)}" onclick="event.stopPropagation()">➜ ${label}</a>` : '';
+  // 需要買票／訂位的地方：data 裡寫 book: { label, url }，畫成一顆票券按鈕
+  const bookBtn = (b) => b && b.url
+    ? `<a class="navlink book" target="_blank" rel="noopener" href="${b.url}" onclick="event.stopPropagation()">🎫 ${b.label || '訂票'}</a>` : '';
   const pills = (tags = []) => tags.map(([t, c]) => `<span class="pill ${c || ''}">${t}</span>`).join('');
   const list = (items) => `<ul>${items.map((i) => `<li>${i}</li>`).join('')}</ul>`;
   const callout = (c) => `<div class="callout ${c.tone || ''}"><div>${c.icon || '⚠️'}</div><div>${c.html}</div></div>`;
@@ -69,7 +72,10 @@
     cur = i;
     const p = PAGES[i];
     document.body.dataset.page = p.id;
-    $('#pageTitle').textContent = p.label;
+    const title = $('#pageTitle');
+    title.textContent = p.label;
+    title.classList.remove('swap'); void title.offsetWidth; title.classList.add('swap');
+    requestAnimationFrame(moveInd);
     $$('[data-go]').forEach((a) => a.classList.toggle('on', a.dataset.go === p.id && !a.classList.contains('brand') && !a.classList.contains('btn')));
     history.replaceState(null, '', '#' + p.id);
     $('#prevPage').disabled = i === 0;
@@ -105,6 +111,57 @@
   });
   if (localStorage.getItem('rome.swiped')) $('#swipeHint').hidden = true;
 
+  /* ---------- 動畫：分頁指示器、捲動浮現、數字跳動 ---------- */
+  // 上方分頁列和底部分頁列各放一顆會滑動的指示器，位置跟著目前那一頁
+  const inds = ['#nav', '#tabbar'].map((sel) => {
+    const bar = $(sel);
+    const ind = document.createElement('i');
+    ind.className = 'tab-ind';
+    bar.prepend(ind);
+    bar.classList.add('has-ind');
+    return { bar, ind };
+  });
+  function moveInd() {
+    inds.forEach(({ bar, ind }) => {
+      const a = $(`a[data-go="${PAGES[cur].id}"]`, bar);
+      if (!a || !bar.offsetWidth) return; // 隱藏中的那一列（桌機的底部列、手機的上方列）不用算
+      ind.style.width = a.offsetWidth + 'px';
+      ind.style.transform = `translateX(${a.offsetLeft}px)`;
+    });
+  }
+  window.addEventListener('resize', moveInd);
+
+  // 卡片類元素第一次捲進畫面時才浮現；新渲染出來的（換天、切分類）也會自動接上
+  const REVEAL = '.card, .stat, .stop, .wx, .todo-group, .callout, .bk, .fg-head, .day-intro, .day-actions, .tbl-card';
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    io.unobserve(e.target);
+  }), { threshold: 0.08 });
+  function reveal(root = document) {
+    $$(REVEAL, root).forEach((el) => {
+      if (el.classList.contains('rv') || el.closest('.leaflet-container')) return;
+      const sib = [...el.parentElement.children].filter((x) => x.matches(REVEAL));
+      el.style.setProperty('--d', `${Math.min(sib.indexOf(el), 8) * 0.05}s`);
+      el.classList.add('rv');
+      io.observe(el);
+    });
+  }
+  new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach((n) => n.nodeType === 1 && reveal(n.parentElement || n))))
+    .observe(pager, { childList: true, subtree: true });
+
+  // 數字從 0 跳到目標值
+  function countUp(el, to, fmt = (v) => Math.round(v), ms = 900) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = fmt(to); return; }
+    const t0 = performance.now();
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / ms);
+      el.textContent = fmt(to * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
   /* ---------- 地圖 ---------- */
   function makeMap(el, zoom = 14) {
     const m = L.map(el, { scrollWheelZoom: false, zoomControl: true }).setView(ROME, zoom);
@@ -112,10 +169,10 @@
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(m);
     return m;
   }
-  const pinIcon = (color, label = '', round = false) =>
+  const pinIcon = (color, label = '', round = false, delay = 0) =>
     L.divIcon({
       className: '',
-      html: `<div class="pin ${round ? 'round' : ''}" style="--c:${color}"><span>${label}</span></div>`,
+      html: `<div class="pin ${round ? 'round' : ''}" style="--c:${color};--pd:${delay}s"><span>${label}</span></div>`,
       iconSize: round ? [16, 16] : [26, 26],
       iconAnchor: round ? [8, 8] : [13, 26],
       popupAnchor: [0, round ? -8 : -24],
@@ -132,15 +189,16 @@
     renderTabs();
     renderDay(curDay);
     renderWeather();
+    renderBookings();
     tick();
   });
 
   $('#stats').innerHTML = `
     <div class="stat live"><div class="k">羅馬時間</div><div class="v mono" id="tRome">--:--</div><div class="s" id="tRomeD"></div></div>
     <div class="stat live"><div class="k">台北時間</div><div class="v mono" id="tTpe">--:--</div><div class="s" id="tDiff"></div></div>
-    <div class="stat live"><div class="k">羅馬現在</div><div class="v" id="wxNow">—</div><div class="s" id="wxNowS">讀取天氣中…</div></div>
     <div class="stat live"><div class="k">EUR → TWD</div><div class="v" id="fx">—</div><div class="s" id="fxS">讀取匯率中…</div></div>
-    <div class="stat wide"><div class="k">出發倒數</div><div class="v" id="cd">—</div><div class="s" id="cdS"></div></div>`;
+    <div class="stat"><div class="k">出發倒數</div><div class="v" id="cd">—</div><div class="s" id="cdS"></div></div>
+    <div class="stat wide wxcard"><div class="k">旅行期間天氣</div><div id="wxTrip" class="wx-trip"></div><div class="s" id="wxNowS">讀取天氣中…</div></div>`;
 
   function tzOffsetMin(tz, at = new Date()) {
     const p = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })
@@ -158,7 +216,10 @@
     const s = store.start;
     if (s) {
       const days = Math.ceil((new Date(s + 'T00:00:00') - now) / 864e5);
-      $('#cd').textContent = days > 0 ? `${days} 天` : days > -4 ? '旅行中' : '已結束';
+      const cdEl = $('#cd');
+      if (days > 0 && !cdEl.dataset.done) { cdEl.dataset.done = 1; countUp(cdEl, days, (x) => `${Math.round(x)} 天`); }
+      else if (days > 0) cdEl.textContent = `${days} 天`;
+      else cdEl.textContent = days > -4 ? '旅行中' : '已結束';
       $('#cdS').textContent = `${fmtDay(addDays(s, 0))} – ${fmtDay(addDays(s, 3))}`;
     } else {
       $('#cd').textContent = '—';
@@ -169,7 +230,7 @@
     try {
       const j = await (await fetch('https://open.er-api.com/v6/latest/EUR')).json();
       const v = j.rates.TWD;
-      $('#fx').textContent = v.toFixed(2);
+      countUp($('#fx'), v, (x) => x.toFixed(2));
       $('#fxS').textContent = `€10 ≈ NT$${Math.round(v * 10)}`;
     } catch {
       $('#fx').textContent = '≈ 35';
@@ -223,7 +284,7 @@
           <div class="stop ${s.kind || ''}" style="--c:${c}" data-idx="${idx}">
             <div class="row1"><span class="nm">${idx ? `${idx}. ` : ''}${s.name}</span>${s.it ? `<span class="it">${s.it}</span>` : ''}</div>
             ${s.note ? `<div class="note">${s.note}</div>` : ''}
-            ${s.tags || s.lat ? `<div class="meta">${pills(s.tags)}<span class="go">${navBtn(s, s.mode || d.mode || 'walking')}</span></div>` : ''}
+            ${s.tags || s.lat ? `<div class="meta">${pills(s.tags)}<span class="go">${bookBtn(s.book)}${navBtn(s, s.mode || d.mode || 'walking')}</span></div>` : ''}
           </div></li>`;
       }).join('')}</ol>`;
     $('#daySide').innerHTML = `<h3>${d.side.title}</h3>${list(d.side.items)}`;
@@ -233,7 +294,7 @@
     dayLayer = L.layerGroup().addTo(dayMap);
     dayMarkers.length = 0;
     pts.forEach((p, k) => {
-      dayMarkers.push(L.marker([p.lat, p.lng], { icon: pinIcon(p.kind === 'food' ? FOOD_COLOR : c, k + 1) })
+      dayMarkers.push(L.marker([p.lat, p.lng], { icon: pinIcon(p.kind === 'food' ? FOOD_COLOR : c, k + 1, false, .15 + k * .07) })
         .bindPopup(popup(p.name, p.it, p, d.mode)).addTo(dayLayer));
     });
     L.polyline(pts.map((p) => [p.lat, p.lng]), { color: c, weight: 3, opacity: .7, dashArray: '6 8' }).addTo(dayLayer);
@@ -245,6 +306,10 @@
       if (!k) return;
       el.addEventListener('click', () => {
         const m = dayMarkers[k - 1];
+        $$('.stop.focus').forEach((x) => x.classList.remove('focus'));
+        el.classList.add('focus');
+        $$('#dayMap .pin.hot').forEach((x) => x.classList.remove('hot'));
+        m.getElement()?.querySelector('.pin')?.classList.add('hot');
         dayMap.flyTo(m.getLatLng(), 16, { duration: .6 });
         m.openPopup();
         // 手機版地圖在時間軸上方，點了要捲回去看
@@ -310,7 +375,7 @@
         <dt>地址</dt><dd>${f.addr}</dd>
       </dl>
       ${f.note ? `<div class="fnote">${f.note}</div>` : ''}
-      <div class="foot">${navBtn(f, 'walking')}<a class="navlink ghost" target="_blank" rel="noopener" href="${gsearch(f.name + ' ' + f.addr)}">評論 / 照片</a></div>
+      <div class="foot">${bookBtn(f.book)}${navBtn(f, 'walking')}<a class="navlink ghost" target="_blank" rel="noopener" href="${gsearch(f.name + ' ' + f.addr)}">評論 / 照片</a></div>
     </article>`;
   function renderFood() {
     const types = T.foodTypes;
@@ -332,9 +397,9 @@
   }
 
   /* ---------- 指南：交通／租機車／須知 ---------- */
-  let guidePane = 'transport';
+  let guidePane = 'book';
   function renderGuideSeg() {
-    seg($('#guideSeg'), [{ k: 'transport', label: '🚇 交通' }, { k: 'scooter', label: '🛵 租機車' }, { k: 'tips', label: 'ℹ️ 須知' }], guidePane, (k) => {
+    seg($('#guideSeg'), [{ k: 'book', label: '🎫 訂票' }, { k: 'transport', label: '🚇 交通' }, { k: 'scooter', label: '🛵 機車' }, { k: 'tips', label: 'ℹ️ 須知' }], guidePane, (k) => {
       guidePane = k;
       $$('.guide-pane').forEach((p) => (p.hidden = p.dataset.pane !== k));
       renderGuideSeg();
@@ -378,47 +443,99 @@
   }
 
   /* ---------- 天氣 ---------- */
-  const WMO = (c) =>
-    c === 0 ? ['☀️', '晴'] : c <= 2 ? ['🌤️', '晴時多雲'] : c === 3 ? ['☁️', '陰'] : c <= 48 ? ['🌫️', '霧'] :
-    c <= 57 ? ['🌦️', '毛毛雨'] : c <= 67 ? ['🌧️', '雨'] : c <= 77 ? ['🌨️', '雪'] : c <= 82 ? ['🌧️', '陣雨'] : ['⛈️', '雷雨'];
+  // 總覽只放一張精簡的天氣卡：行程日進入 16 天預報範圍就顯示那四天，否則顯示 11 月氣候概況
   let wxCache;
   async function renderWeather() {
-    $('#wxHint')?.remove();
+    const trip = store.start ? [0, 1, 2, 3].map((k) => isoOf(addDays(store.start, k))) : [];
+    const climate = T.climateNote;
     try {
       if (!wxCache) {
-        const u = `https://api.open-meteo.com/v1/forecast?latitude=${ROME[0]}&longitude=${ROME[1]}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunset&timezone=Europe%2FRome&forecast_days=16`;
+        const u = `https://api.open-meteo.com/v1/forecast?latitude=${ROME[0]}&longitude=${ROME[1]}&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FRome&forecast_days=16`;
         wxCache = await (await fetch(u)).json();
       }
       const w = wxCache;
       const [ic, txt] = WMO(w.current.weather_code);
-      $('#wxNow').textContent = `${ic} ${Math.round(w.current.temperature_2m)}°`;
-      $('#wxNowS').textContent = `${txt}・體感 ${Math.round(w.current.apparent_temperature)}°`;
-      const trip = store.start ? [0, 1, 2, 3].map((k) => isoOf(addDays(store.start, k))) : [];
-      $('#wxDays').innerHTML = w.daily.time.map((day, k) => {
-        const [i2, t2] = WMO(w.daily.weather_code[k]);
-        const on = trip.includes(day);
-        return `<div class="wx ${on ? 'trip' : ''}">
-          <div class="dd">${on ? `<b style="color:var(--accent)">DAY ${trip.indexOf(day) + 1}</b> ` : ''}${fmtDay(new Date(day + 'T12:00:00'))}</div>
-          <div class="ic" title="${t2}">${i2}</div>
-          <div class="tt">${Math.round(w.daily.temperature_2m_max[k])}° <span>/ ${Math.round(w.daily.temperature_2m_min[k])}°</span></div>
-          <div class="rr">💧 ${w.daily.precipitation_probability_max[k] ?? '-'}%</div>
-          <div class="dd">🌇 ${w.daily.sunset[k].slice(11)}</div></div>`;
-      }).join('');
-      if (trip.length && !trip.some((d) => w.daily.time.includes(d))) {
-        $('#wxDays').insertAdjacentHTML('beforebegin', `<div class="callout blue" id="wxHint"><div>📅</div><div>行程日還不在 16 天預報範圍內，<b>${fmtDay(addDays(store.start, -15))}</b> 起這裡會出現行程日的預報。下面先顯示羅馬最近的天氣。</div></div>`);
+      const days = trip.map((d) => w.daily.time.indexOf(d)).filter((k) => k >= 0);
+      if (days.length) {
+        $('#wxTrip').innerHTML = days.map((k) => {
+          const [i2] = WMO(w.daily.weather_code[k]);
+          return `<div class="wxm"><span class="dd">${fmtDay(new Date(w.daily.time[k] + 'T12:00:00'))}</span><span class="ic">${i2}</span>
+            <b>${Math.round(w.daily.temperature_2m_max[k])}°</b><span class="lo">${Math.round(w.daily.temperature_2m_min[k])}°</span><span class="rr">💧${w.daily.precipitation_probability_max[k] ?? '-'}%</span></div>`;
+        }).join('');
+        $('#wxNowS').textContent = `羅馬現在 ${ic} ${Math.round(w.current.temperature_2m)}°（${txt}）`;
+      } else {
+        $('#wxTrip').innerHTML = `<div class="wx-sum"><span class="ic">🌦️</span><div><b>${climate.temp}</b><br><span>${climate.rain}</span></div></div>`;
+        const from = store.start ? fmtDay(addDays(store.start, -15)) : '';
+        $('#wxNowS').textContent = `羅馬現在 ${ic} ${Math.round(w.current.temperature_2m)}°${from ? `・${from} 起顯示行程日預報` : ''}`;
       }
     } catch {
-      $('#wxNow').textContent = '—';
-      $('#wxNowS').textContent = '讀取失敗';
-      $('#wxDays').innerHTML = '<p class="muted">即時天氣讀取失敗，請參考下方月均氣候。</p>';
+      $('#wxTrip').innerHTML = `<div class="wx-sum"><span class="ic">🌦️</span><div><b>${climate.temp}</b><br><span>${climate.rain}</span></div></div>`;
+      $('#wxNowS').textContent = '即時天氣讀取失敗';
     }
   }
-  function renderClimate() {
-    const c = T.climate;
-    $('#climateBody').innerHTML = `<h2 class="h2">羅馬月均氣候</h2>` +
-      table(['月份', '均高', '均低', '雨天', '日落約', '穿搭'], c.rows.map((r) => [r[0], `${r[1]}°`, `${r[2]}°`, r[3], r[4], r[5]]), [1, 2, 3, 4]) +
-      (c.note ? `<p class="src">${c.note}</p>` : '');
+
+  /* ---------- 總覽：待辦／注意事項／行李（打勾存在 localStorage） ---------- */
+  const checks = JSON.parse(localStorage.getItem('rome.checks') || '{}');
+  const saveChecks = () => localStorage.setItem('rome.checks', JSON.stringify(checks));
+  const linkBtns = (links = []) => links.map(([label, url]) =>
+    `<a class="navlink ${label.startsWith('🎫') || label.startsWith('📝') ? 'book' : 'ghost'}" target="_blank" rel="noopener" href="${url}">${label}</a>`).join('');
+  function renderTodo() {
+    const all = T.todo.flatMap((g) => g.items);
+    $('#todoBody').innerHTML = T.todo.map((g) => `
+      <div class="todo-group">
+        <div class="tg-head"><span class="pill ${g.tone || ''}">${g.when}</span>${g.date ? `<span class="tg-date">${g.date}</span>` : ''}</div>
+        <div class="card todo-list">${g.items.map((it) => `
+          <label class="todo ${checks[it.id] ? 'done' : ''}">
+            <input type="checkbox" data-id="${it.id}" ${checks[it.id] ? 'checked' : ''} />
+            <span class="box"></span>
+            <span class="tx"><b>${it.text}</b>${it.note ? `<span class="tn">${it.note}</span>` : ''}
+              ${it.links ? `<span class="tl-links">${linkBtns(it.links)}</span>` : ''}</span>
+          </label>`).join('')}</div>
+      </div>`).join('');
+    const done = all.filter((it) => checks[it.id]).length;
+    $('#todoCnt').textContent = `${done} / ${all.length}`;
+    $('#todoBar').style.width = `${(done / all.length) * 100}%`;
+    $$('#todoBody input').forEach((c) => c.addEventListener('change', () => { checks[c.dataset.id] = c.checked; saveChecks(); renderTodo(); }));
   }
+  function renderMust() {
+    $('#mustBody').innerHTML = T.musts.map((m) => `<div class="card must"><div class="must-ic">${m.icon}</div><h3>${m.title}</h3><p>${m.text}</p>${m.links ? `<div class="tl-links">${linkBtns(m.links)}</div>` : ''}</div>`).join('');
+  }
+  function renderPack() {
+    const all = T.packing.flatMap((g) => g.items.map((x, i) => `${g.k}-${i}`));
+    $('#packBody').innerHTML = T.packing.map((g) => `
+      <div class="card"><h3>${g.icon} ${g.title}</h3>${g.items.map((x, i) => {
+        const id = `pk-${g.k}-${i}`;
+        return `<label class="todo sm ${checks[id] ? 'done' : ''}"><input type="checkbox" data-id="${id}" ${checks[id] ? 'checked' : ''} /><span class="box"></span><span class="tx">${x}</span></label>`;
+      }).join('')}</div>`).join('');
+    const done = all.filter((k) => checks['pk-' + k]).length;
+    $('#packCnt').textContent = `${done} / ${all.length}`;
+    $('#packSub').innerHTML = T.packingNote;
+    $$('#packBody input').forEach((c) => c.addEventListener('change', () => { checks[c.dataset.id] = c.checked; saveChecks(); renderPack(); }));
+  }
+
+  /* ---------- 指南：訂票總表（從行程、美食、交通自動彙整） ---------- */
+  function renderBookings() {
+    const rows = [];
+    T.days.forEach((d, i) => d.stops.forEach((s) => {
+      if (s.book) rows.push({ when: `Day ${i + 1}${store.start ? `・${fmtDay(addDays(store.start, i))}` : ''} ${s.t}`, c: DAY_COLORS[i], name: s.name, b: s.book });
+    }));
+    const inPlan = new Set(T.days.flatMap((d) => d.stops.map((s) => s.name)));
+    const food = T.food.filter((f) => f.book && !inPlan.has(f.name)).map((f) => ({ when: f.day ? `Day ${f.day}` : '備選', c: f.day ? DAY_COLORS[f.day - 1] : 'var(--faint)', name: f.name, b: f.book }));
+    const sec = (title, sub, list) => `<h2 class="h2">${title}</h2><p class="sub">${sub}</p><div class="card book-list">${list.map((r) => `
+      <div class="bk">
+        <div class="bk-when" style="color:${r.c}">${r.when}</div>
+        <div class="bk-main"><b>${r.name}</b>${r.b.note ? `<span class="tn">${r.b.note}</span>` : ''}</div>
+        <div class="bk-go">${bookBtn(r.b)}</div>
+      </div>`).join('')}</div>`;
+    $('#bookBody').innerHTML = (T.bookCallouts || []).map(callout).join('') +
+      sec('按行程順序', '景點門票和行程裡的餐廳。實名制的票，名字要跟護照一樣。', rows) +
+      sec('其他可訂位的餐廳', '不在行程裡的備選；沒列在這裡的店是電話訂位或現場排隊。', food) +
+      sec('交通與其他', '', T.bookExtra.map((x) => ({ when: x.when, c: 'var(--accent)', name: x.name, b: x.book })));
+  }
+
+  const WMO = (c) =>
+    c === 0 ? ['☀️', '晴'] : c <= 2 ? ['🌤️', '晴時多雲'] : c === 3 ? ['☁️', '陰'] : c <= 48 ? ['🌫️', '霧'] :
+    c <= 57 ? ['🌦️', '毛毛雨'] : c <= 67 ? ['🌧️', '雨'] : c <= 77 ? ['🌨️', '雪'] : c <= 82 ? ['🌧️', '陣雨'] : ['⛈️', '雷雨'];
 
   /* ---------- 啟動 ---------- */
   tick();
@@ -431,9 +548,13 @@
   renderTransport();
   renderScooter();
   renderTips();
-  renderClimate();
+  renderTodo();
+  renderMust();
+  renderPack();
+  renderBookings();
   renderWeather();
   loadFx();
   const start = PAGES.findIndex((p) => '#' + p.id === location.hash);
-  requestAnimationFrame(() => goTo(start < 0 ? 0 : start, false));
+  reveal();
+  requestAnimationFrame(() => { goTo(start < 0 ? 0 : start, false); moveInd(); });
 })();

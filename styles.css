@@ -258,7 +258,53 @@ body { overscroll-behavior: none; }
 footer { padding: 36px 0 0; color: var(--faint); font-size: 12.5px; }
 
 /* ---------- 總覽數字磚 ---------- */
-.stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: 26px; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 26px; }
+.stat.wide { grid-column: 1 / -1; }
+.wx-trip { display: flex; gap: 8px; margin: 8px 0 4px; flex-wrap: wrap; }
+.wxm { flex: 1 1 0; min-width: 70px; display: grid; justify-items: center; gap: 0; padding: 8px 4px; border-radius: 14px; background: var(--glass); border: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.wxm .dd { font-size: 11.5px; color: var(--muted); }
+.wxm .ic { font-size: 24px; line-height: 1.3; }
+.wxm b { font-size: 15px; }
+.wxm .lo { font-size: 12px; color: var(--faint); }
+.wxm .rr { font-size: 11px; color: var(--accent); }
+.wx-sum { display: flex; gap: 12px; align-items: center; font-size: 14px; }
+.wx-sum .ic { font-size: 30px; }
+.wx-sum span { color: var(--muted); font-size: 13px; }
+
+/* ---------- 待辦／行李：iOS 風格勾選清單 ---------- */
+.progress { height: 6px; border-radius: 6px; background: var(--line); overflow: hidden; margin: 0 0 14px; }
+.progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--ok), var(--accent)); border-radius: 6px; transition: width .3s; }
+.todo-group { margin-bottom: 14px; }
+.tg-head { display: flex; align-items: center; gap: 8px; margin: 0 0 8px 2px; }
+.tg-head .pill { font-size: 12.5px; padding: 3px 11px; }
+.tg-date { font-size: 12.5px; color: var(--faint); }
+.todo-list { padding: 4px 16px; }
+.todo { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); cursor: pointer; align-items: start; }
+.todo:last-child { border-bottom: 0; }
+.todo input { position: absolute; opacity: 0; pointer-events: none; }
+.todo .box { width: 22px; height: 22px; border-radius: 50%; border: 1.8px solid var(--line-strong); margin-top: 1px; display: grid; place-items: center; transition: all .15s; }
+.todo.done .box { background: var(--ok); border-color: var(--ok); }
+.todo.done .box::after { content: ""; width: 6px; height: 11px; border: solid #fff; border-width: 0 2.2px 2.2px 0; transform: translateY(-1px) rotate(45deg); }
+.todo input:focus-visible + .box { outline: 2px solid var(--accent); outline-offset: 2px; }
+.todo .tx { display: flex; flex-direction: column; gap: 3px; font-size: 14px; }
+.todo .tx b { font-weight: 600; }
+.todo.done .tx b, .todo.sm.done .tx { color: var(--faint); text-decoration: line-through; }
+.tn { font-size: 12.5px; color: var(--muted); font-weight: 400; }
+.tl-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.todo.sm { padding: 7px 0; border: 0; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; }
+.todo.sm .box { width: 20px; height: 20px; }
+.todo.sm .tx { font-size: 13.5px; }
+.must .must-ic { font-size: 26px; line-height: 1; margin-bottom: 8px; }
+.must p { margin: 0; font-size: 13.5px; color: var(--muted); }
+
+/* ---------- 訂票總表 ---------- */
+.book-list { padding: 4px 16px; }
+.bk { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 4px 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.bk:last-child { border-bottom: 0; }
+.bk-when { font-size: 12.5px; font-weight: 600; }
+.bk-main { display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+.navlink.book { background: color-mix(in srgb, #ff9f0a 90%, #000 0%); color: #fff; box-shadow: 0 3px 10px rgba(255, 159, 10, .35); }
+.stop .go { display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 .stat { border-radius: var(--radius); padding: 14px 16px; min-width: 0; }
 .stat .k { font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 6px; font-weight: 500; }
 .stat .v { font-family: var(--font-display); font-size: clamp(22px, 2.8vw, 30px); font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; margin-top: 2px; white-space: nowrap; }
@@ -387,9 +433,7 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 }
 
 /* ================= 平板 ================= */
-@media (max-width: 1100px) {
-  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
+
 @media (max-width: 960px) {
   /* 行程頁：地圖放最上面、時間軸中間、提醒放最後 */
   .day-wrap { grid-template-columns: minmax(0, 1fr); gap: 0; }
@@ -414,7 +458,8 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 
   .lead { font-size: 15px; }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 20px; }
-  .stat.wide { grid-column: 1 / -1; }
+  .bk { grid-template-columns: minmax(0, 1fr) auto; }
+  .bk-when { grid-column: 1 / -1; }
   .stat .v { font-size: 24px; }
 
   .card { padding: 15px 16px; }
@@ -451,4 +496,117 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* ================= 動畫 =================
+   原則：只動 transform / opacity（交給合成層，不觸發重排）；
+   系統開了「減少動態效果」就全部關掉（檔案最後）。 */
+:root { --ease-out: cubic-bezier(.22, 1, .36, 1); --ease-spring: cubic-bezier(.34, 1.56, .64, 1); }
+
+/* 背景柔光：四團光慢慢漂移、呼吸 */
+.ambient { animation: drift 28s ease-in-out infinite alternate; will-change: transform; }
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  50%  { transform: translate3d(3vmax, -2vmax, 0) scale(1.08) rotate(4deg); }
+  100% { transform: translate3d(-2vmax, 2vmax, 0) scale(1.03) rotate(-3deg); }
+}
+
+/* 標題「永恆之城」：漸層緩慢流動 */
+.hero-h em { background-size: 220% 100%; animation: shimmer 7s ease-in-out infinite alternate; }
+@keyframes shimmer { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+
+/* 總覽首屏：依序浮上來 */
+.page-in > .eyebrow, .page-in > .hero-h, .page-in > .lead, .page-in > .start-row { animation: rise .8s var(--ease-out) both; }
+.page-in > .hero-h { animation-delay: .08s; }
+.page-in > .lead { animation-delay: .16s; }
+.page-in > .start-row { animation-delay: .24s; }
+@keyframes rise { from { opacity: 0; transform: translate3d(0, 18px, 0); } to { opacity: 1; transform: none; } }
+
+/* LIVE 小綠點呼吸 */
+.eyebrow .dot { animation: pulse 2s ease-out infinite; }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 55%, transparent); }
+  100% { box-shadow: 0 0 0 9px transparent; }
+}
+
+/* 捲進畫面才出現：JS 幫卡片加 .rv，看得到時加 .in；--d 是錯開的延遲 */
+.rv { opacity: 0; transform: translate3d(0, 22px, 0) scale(.985); transition: opacity .6s var(--ease-out), transform .7s var(--ease-out); transition-delay: var(--d, 0s); }
+.rv.in { opacity: 1; transform: none; }
+/* 時間軸的站從左邊滑進來 */
+.stop.rv { transform: translate3d(-16px, 0, 0); }
+.stop.rv.in { transform: none; }
+
+/* 按鈕、膠囊：按下去縮一下，滑過浮起來 */
+.btn, .chip, .navlink, .day-tab, .seg button, .tabbar a, .nav a, .arrow {
+  transition: transform .25s var(--ease-spring), background .2s, color .2s, box-shadow .2s, filter .2s;
+}
+.btn:hover, .navlink:hover, .day-tab:hover { transform: translateY(-2px); }
+.btn:active, .chip:active, .navlink:active, .day-tab:active, .seg button:active, .tabbar a:active, .arrow:active { transform: scale(.94); }
+.card { transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out), opacity .6s var(--ease-out); }
+@media (hover: hover) {
+  .card.food:hover, .card.must:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 var(--glass-edge), 0 18px 44px rgba(0, 0, 0, .14); }
+}
+
+/* 分頁列：一顆會滑動的玻璃指示器（桌機上方、手機底部） */
+.nav { position: relative; } /* .tabbar 本身已是 position: fixed，指示器可直接以它定位 */
+.tab-ind {
+  position: absolute; z-index: 0; top: 0; left: 0; height: 100%; border-radius: var(--pill); pointer-events: none;
+  background: var(--accent); box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: transform .5s var(--ease-spring), width .5s var(--ease-spring);
+}
+.tabbar .tab-ind { border-radius: 18px; background: var(--accent-soft); box-shadow: none; }
+.nav a, .tabbar a { position: relative; z-index: 1; }
+.nav.has-ind a.on { background: transparent; box-shadow: none; }
+.tabbar.has-ind a.on { background: transparent; }
+.tabbar a.on svg { animation: bounce .5s var(--ease-spring); }
+@keyframes bounce { 0% { transform: scale(.7); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+/* 換頁時頁名淡入 */
+.page-title.swap { animation: titleIn .4s var(--ease-out); }
+@keyframes titleIn { from { opacity: 0; transform: translate3d(8px, 0, 0); } to { opacity: 1; transform: none; } }
+
+/* 分段控制：選中的那顆彈一下 */
+.seg button.on { animation: segPop .35s var(--ease-spring); }
+@keyframes segPop { from { transform: scale(.9); } to { transform: scale(1); } }
+
+/* 勾選：圓圈彈一下、勾勾畫出來 */
+.todo.done .box { animation: checkPop .4s var(--ease-spring); }
+.todo.done .box::after { animation: tick .3s .08s var(--ease-out) both; }
+@keyframes checkPop { 0% { transform: scale(.6); } 70% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes tick { from { opacity: 0; transform: translateY(-1px) rotate(45deg) scale(.3); } to { opacity: 1; transform: translateY(-1px) rotate(45deg) scale(1); } }
+.todo .tx b { transition: color .3s; }
+
+/* 進度條帶光澤 */
+.progress i { position: relative; overflow: hidden; transition: width .6s var(--ease-out); }
+.progress i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent); transform: translateX(-100%); animation: sheen 2.4s ease-in-out infinite; }
+@keyframes sheen { to { transform: translateX(100%); } }
+
+/* 地圖圖釘：從上面掉下來彈一下 */
+.pin { animation: pinDrop .55s var(--ease-spring) both; animation-delay: var(--pd, 0s); }
+@keyframes pinDrop {
+  from { opacity: 0; transform: translate3d(0, -26px, 0) rotate(-45deg) scale(.6); }
+  to { opacity: 1; transform: rotate(-45deg); }
+}
+.pin.round { animation-name: dotPop; }
+@keyframes dotPop { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+/* 目前點到的站：圖釘跳動 */
+.pin.hot { animation: pinBounce .9s ease-in-out infinite; }
+@keyframes pinBounce { 0%, 100% { transform: rotate(-45deg) translate(0, 0); } 50% { transform: rotate(-45deg) translate(4px, -4px); } }
+.stop.focus { background: var(--glass-strong); box-shadow: inset 0 1px 0 var(--glass-edge), inset 0 0 0 2px color-mix(in srgb, var(--c) 60%, transparent), var(--glass-shadow); }
+
+/* 左右滑動提示：手指往兩邊推 */
+.swipe-hint { animation: nudge 2.2s ease-in-out infinite; }
+@keyframes nudge { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+/* 票券按鈕：輕輕閃一下吸引注意 */
+.navlink.book { position: relative; overflow: hidden; }
+.navlink.book::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .5) 50%, transparent 70%); transform: translateX(-120%); animation: sheen 3.2s ease-in-out infinite; }
+
+/* 天氣 emoji 輕輕浮動 */
+.wx-sum .ic, .wxm .ic { display: inline-block; animation: float 3.6s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .rv { opacity: 1 !important; transform: none !important; }
 }

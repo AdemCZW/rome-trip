@@ -30,7 +30,7 @@
 
   <!-- 橫向分頁：每一頁自己上下捲，頁與頁之間左右滑 -->
   <main class="pager" id="pager">
-    <!-- 1 總覽＋天氣 -->
+    <!-- 1 總覽：狀態列＋待辦＋注意事項＋行李 -->
     <section class="page" id="home" data-title="總覽">
       <div class="page-in">
         <span class="eyebrow"><span class="dot"></span>Roma, Italia · 4 days</span>
@@ -43,10 +43,17 @@
         <div class="stats" id="stats"></div>
         <div class="swipe-hint" id="swipeHint">← 左右滑動切換頁面 →</div>
 
-        <h2 class="h2">天氣預報</h2>
-        <p class="sub">即時預報來自 Open-Meteo（最多 16 天）；行程日會框起來。</p>
-        <div class="wx-days" id="wxDays"></div>
-        <div id="climateBody" style="margin-top:14px"></div>
+        <h2 class="h2">出發前待辦 <span class="cnt" id="todoCnt"></span></h2>
+        <p class="sub">打勾會記在這台裝置上。要買票、申請的項目都附官方連結。</p>
+        <div class="progress"><i id="todoBar"></i></div>
+        <div id="todoBody"></div>
+
+        <h2 class="h2">一定要知道的事</h2>
+        <div class="grid g3" id="mustBody"></div>
+
+        <h2 class="h2">行李清單 <span class="cnt" id="packCnt"></span></h2>
+        <p class="sub" id="packSub"></p>
+        <div class="grid g3" id="packBody"></div>
       </div>
     </section>
 
@@ -87,7 +94,8 @@
     <section class="page" id="guide" data-title="指南">
       <div class="page-in">
         <div class="seg" id="guideSeg" role="tablist"></div>
-        <div class="guide-pane" id="transportBody" data-pane="transport"></div>
+        <div class="guide-pane" id="bookBody" data-pane="book"></div>
+        <div class="guide-pane" id="transportBody" data-pane="transport" hidden></div>
         <div class="guide-pane" id="scooterBody" data-pane="scooter" hidden></div>
         <div class="guide-pane" id="tipsBody" data-pane="tips" hidden></div>
         <footer id="footer"></footer>
