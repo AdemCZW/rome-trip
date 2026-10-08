@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#eef0f3" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0e1116" media="(prefers-color-scheme: dark)" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>ROMA · 4 天行程</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <!-- 頂部：桌機是完整分頁列，手機只顯示目前頁名 -->
+  <header class="top">
+    <div class="top-bar">
+      <a class="brand" href="#home" data-go="home"><b>ROMA</b>·4</a>
+      <span class="page-title" id="pageTitle">總覽</span>
+      <nav class="nav" id="nav" aria-label="頁面"></nav>
+      <div class="pager-arrows">
+        <button class="arrow" id="prevPage" aria-label="上一頁">‹</button>
+        <button class="arrow" id="nextPage" aria-label="下一頁">›</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 橫向分頁：每一頁自己上下捲，頁與頁之間左右滑 -->
+  <main class="pager" id="pager">
+    <!-- 1 總覽＋天氣 -->
+    <section class="page" id="home" data-title="總覽">
+      <div class="page-in">
+        <span class="eyebrow"><span class="dot"></span>Roma, Italia · 4 days</span>
+        <h1 class="hero-h">四天，<br />走進<em>永恆之城</em>。</h1>
+        <p class="lead" id="lead"></p>
+        <div class="start-row">
+          <label class="field">出發日 <input type="date" id="startDate" /></label>
+          <a class="btn primary" href="#plan" data-go="plan">看每日行程 →</a>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="swipe-hint" id="swipeHint">← 左右滑動切換頁面 →</div>
+
+        <h2 class="h2">天氣預報</h2>
+        <p class="sub">即時預報來自 Open-Meteo（最多 16 天）；行程日會框起來。</p>
+        <div class="wx-days" id="wxDays"></div>
+        <div id="climateBody" style="margin-top:14px"></div>
+      </div>
+    </section>
+
+    <!-- 2 每日行程 -->
+    <section class="page" id="plan" data-title="行程">
+      <div class="page-in">
+        <div class="day-tabs" id="dayTabs" role="tablist"></div>
+        <div class="day-wrap">
+          <div class="day-body" id="dayBody"></div>
+          <aside class="day-aside">
+            <div class="day-map" id="dayMap"></div>
+            <div class="card day-side" id="daySide"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 地圖 -->
+    <section class="page" id="map" data-title="地圖">
+      <div class="page-in page-map">
+        <div class="map-filters scroll-row" id="mapFilters"></div>
+        <div id="bigMap"></div>
+      </div>
+    </section>
+
+    <!-- 4 美食 -->
+    <section class="page" id="food" data-title="美食">
+      <div class="page-in">
+        <div class="seg" id="foodSeg" role="tablist"></div>
+        <div class="scroll-row" id="foodTags" style="margin-top:10px"></div>
+        <div id="foodBody"></div>
+        <h2 class="h2">吃飯須知</h2>
+        <div class="grid g2" id="foodEtiquette"></div>
+      </div>
+    </section>
+
+    <!-- 5 指南：交通／租機車／須知 -->
+    <section class="page" id="guide" data-title="指南">
+      <div class="page-in">
+        <div class="seg" id="guideSeg" role="tablist"></div>
+        <div class="guide-pane" id="transportBody" data-pane="transport"></div>
+        <div class="guide-pane" id="scooterBody" data-pane="scooter" hidden></div>
+        <div class="guide-pane" id="tipsBody" data-pane="tips" hidden></div>
+        <footer id="footer"></footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- 手機底部分頁列（iOS 風格玻璃） -->
+  <nav class="tabbar" id="tabbar" aria-label="頁面"></nav>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
