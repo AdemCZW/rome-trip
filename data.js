@@ -17,7 +17,7 @@ window.TRIP = {
     {
       when: '現在就做', tone: 'bad', date: '10 月上旬',
       items: [
-        { id: 'colosseo', text: '搶競技場門票 11/8（日）8:30', note: '參觀日前 30 天開賣，<b>11/8 的票約 10/9–10/10 上架</b>。一般票 €18、含地下層 €24。實名制，名字要跟護照一樣。官方說這是唯一官方線上售票處。', links: [['🎫 官方售票', 'https://ticketing.colosseo.it/en/categorie/singoli-1-8-persone/']] },
+        { id: 'colosseo', text: '競技場門票 11/8（日）13:00', note: '一般票 €18、含地下層 €24。實名制，名字要跟護照一樣；參觀日前第 7 天午夜前可以改名一次。同一張 24h 票含古羅馬廣場＋帕拉提諾山（可排在競技場之前）。', links: [['🎫 官方售票', 'https://ticketing.colosseo.it/en/categorie/singoli-1-8-persone/']] },
         { id: 'vatican', text: '馬上訂梵蒂岡博物館 11/9（一）', note: '<b>10/8 查詢時 11/9 上午時段已售完</b>，其他時段也快沒了。€25，實名制。訂到的時段跟 Day 2 行程對一下。', links: [['🎫 官方售票', 'https://tickets.museivaticani.va/home/calendar/visit/MV-Biglietti/1']] },
         { id: 'borghese', text: '訂博爾蓋塞美術館 11/10（二）14:00', note: '強制預約，€18，每場限 180 人。11/10 的票已經開賣。', links: [['🎫 官方訂票', 'https://www.tosc.it/artist/galleria-borghese/']] },
         { id: 'stpeter', text: '訂聖彼得圓頂 11/9（一）早上', note: '樓梯 €17、電梯 €22，含大教堂入場。只進大教堂不爬圓頂可以免費排隊。', links: [['🎫 官方訂票', 'https://www.basilicasanpietro.va/en/products']] },
@@ -32,8 +32,8 @@ window.TRIP = {
     {
       when: '出發前 3–4 週', tone: 'warn', date: '10/12–10/20',
       items: [
-        { id: 'restaurants', text: '訂其他要訂位的餐廳', note: 'La Taverna dei Fori Imperiali（Day 1 午餐，週二休）、Grappolo d\'Oro（Day 2 晚餐）。完整清單在「指南 → 訂票」。Da Enzo al 29（Day 4）不收訂位，現場排。', links: [['📝 Taverna 訂位', 'https://www.latavernadeiforiimperiali.com/'], ['📝 Grappolo 訂位', 'https://hosteriagrappolodoro.it/prenotazioni/']] },
-        { id: 'sanclemente', text: '訂聖克萊門特地下遺跡 11/8（日）14:45', note: '€10，每天限量，週日 12:00–18:00 開放。', links: [['🎫 官方預約', 'https://www.basilicasanclemente.com/eng/booking/']] },
+        { id: 'restaurants', text: '訂其他要訂位的餐廳', note: 'La Taverna dei Fori Imperiali（Day 1 午餐 14:30，週二休）、Grappolo d\'Oro（Day 2 晚餐）。完整清單在「指南 → 訂票」。Da Enzo al 29（Day 4）不收訂位，現場排。', links: [['📝 Taverna 訂位', 'https://www.latavernadeiforiimperiali.com/'], ['📝 Grappolo 訂位', 'https://hosteriagrappolodoro.it/prenotazioni/']] },
+        { id: 'sanclemente', text: '訂聖克萊門特地下遺跡 11/8（日）15:45', note: '€10，每天限量，週日 12:00–18:00 開放。', links: [['🎫 官方預約', 'https://www.basilicasanclemente.com/eng/booking/']] },
         { id: 'pantheon', text: '訂萬神殿 11/10（二）9:00', note: '€7，11 月時段約 10 月中開賣；要先註冊 Musei Italiani 帳號。', links: [['🎫 官方訂票', 'https://portale.museiitaliani.it/b2c/buyTicketless/33f77159-0acd-40c4-8524-701f33aae108']] },
         { id: 'catacomb', text: '預約聖賽巴斯蒂安地下墓穴 11/11（三）14:15', note: '€10 含導覽，官方建議先預約。', links: [['🎫 官方預約', 'https://catacombe.org/en/booking']] },
         { id: 'scooter', text: '預約機車（Day 4，11/11）', note: '125cc €58–68／天，押金 €500 起。非歐盟駕照要「本國駕照＋國際駕照」。', links: [['📝 Bici & Baci 預約', 'https://bicibaci.com/noleggio-biciclette-e-scooter/']] },
@@ -84,27 +84,29 @@ window.TRIP = {
   days: [
     {
       title: '古羅馬一日',
-      area: '競技場・古羅馬廣場・Monti',
+      area: '聖母大殿・古羅馬廣場・競技場・聖克萊門特・Monti',
       mode: 'walking',
-      summary: '11/8（日）。週日梵蒂岡休館、阿皮亞古道禁行機動車，所以第一天排古羅馬：競技場一早入場人最少，中午在 Monti 吃 trattoria，下午去聖克萊門特教堂看三層地下遺跡（要先上網預約），16:30 上卡比托利歐山看古羅馬廣場的夕陽（11 月日落約 16:55）。',
-      tags: [['全程步行', 'info'], ['競技場需預約', 'warn']],
+      summary: '11/8（日）。競技場改成 13:00 入場：早上先去聖母大殿，接著用同一張票逛古羅馬廣場和帕拉提諾山（可以排在競技場之前），13:00 進競技場，下午在 Monti 吃遲一點的午餐、看聖克萊門特教堂的地下遺跡，16:30 上卡比托利歐山等 16:56 的夕陽。',
+      tags: [['全程步行', 'info'], ['競技場 13:00', 'warn']],
       stops: [
-        { t: '07:30', name: 'Pasticceria Regoli', it: '早餐：maritozzo 鮮奶油麵包', kind: 'food', lat: 41.89508, lng: 12.50189, note: '羅馬公認最好吃的 maritozzo 之一，配一杯 cappuccino（早上才喝）。週二休。', tags: [['€2–5'], ['週二休', 'warn']] },
-        { t: '08:30', name: '羅馬競技場', it: 'Colosseo', kind: 'sight', lat: 41.89021, lng: 12.49223, note: '一定要上官方售票網站 ticketing.colosseo.it 預約實名制時段票，<b>參觀日前 30 天上午約 9:00 開賣</b>（11/8 的票約 10/9 開賣），之後會陸續釋出退票。挑 8:30 第一個時段。帶護照，入口會核對姓名；參觀日前第 7 天午夜前可以改名一次。11 月開放 8:30–16:30，最後入場 15:30。', tags: [['€18 一般票'], ['€24 含地下層'], ['30 天前開賣', 'bad'], ['約 1.5 h']], book: { label: '官方訂票', url: 'https://ticketing.colosseo.it/en/categorie/singoli-1-8-persone/' } },
-        { t: '10:00', name: '古羅馬廣場＋帕拉提諾山', it: 'Foro Romano & Palatino', kind: 'sight', lat: 41.89246, lng: 12.48533, note: '和競技場同一張票（24 小時內各進一次），9:00 開門。先上帕拉提諾山看皇宮遺跡、俯瞰大競技場，再走下古羅馬廣場。幾乎沒有遮蔭，記得帶水，場內有 nasoni 飲水泉可以裝水。', tags: [['同票'], ['約 2–2.5 h']] },
-        { t: '12:45', name: 'La Taverna dei Fori Imperiali', it: '午餐：cacio e pepe、gricia', kind: 'food', lat: 41.89395, lng: 12.48943, note: 'Monti 區的家族 trattoria，cacio e pepe 會加檸檬皮。必須先訂位（官網可線上訂），週二休。', book: { label: '訂位', url: 'https://www.latavernadeiforiimperiali.com/' }, tags: [['必訂位', 'bad'], ['€30–45']] },
-        { t: '14:00', name: 'Monti 小巷散步', it: 'Rione Monti', kind: 'sight', lat: 41.89533, lng: 12.49152, note: '羅馬最文青的老區：古著店、手作店、常春藤爬滿的巷子。Piazza degli Zingari 的 Fatamorgana 約 13:30 開門，可以吃一球天然口味 gelato。', tags: [['Fatamorgana gelato', 'gem']] },
-        { t: '14:45', name: '聖克萊門特教堂', it: 'Basilica di San Clemente', kind: 'sight', lat: 41.88937, lng: 12.49761, note: '隱藏版景點。一棟教堂疊三層歷史：12 世紀教堂、4 世紀教堂，再往下是 1 世紀羅馬房屋和密特拉神廟，地底還聽得到伏流的水聲。<b>地下層要先上官網預約</b>，每天有人數上限；參觀 30 分鐘、禁止拍照，提早 5 分鐘到。週日開放 12:00–18:00，最後入場 17:30。', tags: [['€10'], ['需預約', 'warn'], ['隱藏景點', 'gem']], book: { label: '官方預約', url: 'https://www.basilicasanclemente.com/eng/booking/' } },
-        { t: '16:20', name: '卡比托利歐山＋夕陽觀景', it: 'Piazza del Campidoglio', kind: 'sight', lat: 41.89338, lng: 12.48297, note: '米開朗基羅設計的廣場。從市政廳兩側往後走，就能從上方看整個古羅馬廣場；11/8 日落約 16:55，16:30 前到最好。', tags: [['免費'], ['夕陽', 'hot']] },
-        { t: '19:30', name: 'Ai Tre Scalini', it: '晚餐／酒館：葡萄酒＋肉丸', kind: 'food', lat: 41.89668, lng: 12.49170, note: '1895 年開業的老酒館，100 多款酒，點 polpette al sugo 茄汁肉丸和火腿起司拼盤。官網寫明不接受訂位，營業到 24:00。', tags: [['隱藏版', 'gem'], ['€12–25']] },
+        { t: '08:00', name: 'Pasticceria Regoli', it: '早餐：maritozzo 鮮奶油麵包', kind: 'food', lat: 41.89508, lng: 12.50189, note: '羅馬公認最好吃的 maritozzo 之一，配一杯 cappuccino（早上才喝）。週二休，週日有開。', tags: [['€2–5']] },
+        { t: '08:45', name: '聖母大殿', it: 'Basilica di Santa Maria Maggiore', kind: 'sight', lat: 41.89756, lng: 12.49842, note: '羅馬四大特級宗座聖殿之一，免費入場、要遮肩過膝。<b>教宗方濟各的墓</b>在左側側廊（Cappella Paolina 和 Cappella Sforza 之間）。週日 10:00、12:00 主祭壇有彌撒，部分區域會限制參觀，所以早點去。⚠ 官網沒列開放時間，第三方資料約 07:00 開。', tags: [['免費'], ['約 45 min']] },
+        { t: '09:45', name: '古羅馬廣場＋帕拉提諾山', it: 'Foro Romano & Palatino', kind: 'sight', lat: 41.89246, lng: 12.48533, note: '跟競技場<b>同一張 24h 票</b>，官網寫明可以排在競技場時段之前或之後，各入場一次；9:00 開門。從 Via dei Fori Imperiali 的入口進，先上帕拉提諾山看皇宮遺跡，再走下古羅馬廣場。沒有遮蔭，帶水，場內有 nasoni 飲水泉。12:30 前往競技場入口。', tags: [['同票'], ['約 2.5 h']] },
+        { t: '13:00', name: '羅馬競技場', it: 'Colosseo', kind: 'sight', lat: 41.89021, lng: 12.49223, note: '<b>13:00 時段入場</b>，官網建議提早 15 分鐘到競技場入口（Sperone Valadier，靠君士坦丁凱旋門那側）。實名制，帶護照核對姓名。11 月整個園區 16:30 關門、最後入場 15:30。', tags: [['€18 一般票'], ['€24 含地下層'], ['約 1.5 h']], book: { label: '官方訂票', url: 'https://ticketing.colosseo.it/en/categorie/singoli-1-8-persone/' } },
+        { t: '14:30', name: 'La Taverna dei Fori Imperiali', it: '遲一點的午餐：cacio e pepe、gricia', kind: 'food', lat: 41.89395, lng: 12.48943, note: 'Monti 區的家族 trattoria，cacio e pepe 會加檸檬皮。午餐供應到 15:00，<b>訂 14:30</b>（官網可線上訂），週二休。', tags: [['必訂位', 'bad'], ['€30–45']], book: { label: '訂位', url: 'https://www.latavernadeiforiimperiali.com/' } },
+        { t: '15:45', name: '聖克萊門特教堂', it: 'Basilica di San Clemente', kind: 'sight', lat: 41.88935, lng: 12.49756, note: '隱藏版景點。一棟教堂疊三層歷史：12 世紀教堂、4 世紀教堂，再往下是 1 世紀羅馬房屋和密特拉神廟，地底還聽得到伏流的水聲。<b>地下層要先上官網預約</b>（週日 12:00–18:00，最後入場 17:30），參觀 30 分鐘、禁止拍照。', tags: [['€10'], ['需預約', 'warn'], ['隱藏景點', 'gem']], book: { label: '官方預約', url: 'https://www.basilicasanclemente.com/eng/booking/' } },
+        { t: '16:35', name: '卡比托利歐山＋夕陽觀景', it: 'Piazza del Campidoglio', kind: 'sight', lat: 41.89338, lng: 12.48297, note: '從聖克萊門特走過來約 20 分鐘。米開朗基羅設計的廣場，從市政廳兩側往後走，就能從上方看整個古羅馬廣場。<b>11/8 日落 16:56</b>，天色到 17:25 左右都好看。', tags: [['免費'], ['夕陽', 'hot']] },
+        { t: '17:45', name: 'Monti 小巷散步＋Fatamorgana', it: '天然口味 gelato', kind: 'food', lat: 41.89533, lng: 12.49152, note: '羅馬最文青的老區：古著店、手作店、常春藤爬滿的巷子。Piazza degli Zingari 的 Fatamorgana 約營業到 21:30。', tags: [['隱藏版', 'gem']] },
+        { t: '19:00', name: 'Ai Tre Scalini', it: '晚餐／酒館：葡萄酒＋肉丸', kind: 'food', lat: 41.89668, lng: 12.49170, note: '1895 年開業的老酒館，100 多款酒，點 polpette al sugo 茄汁肉丸和火腿起司拼盤。官網寫明不接受訂位。⚠ 週日開門時間各來源不一（12:30 或 18:00），19:00 去最保險。', tags: [['隱藏版', 'gem'], ['€12–25']] },
       ],
       side: {
         title: 'Day 1 小提醒',
         items: [
-          '競技場票是<b>實名制</b>，入口會核對護照，名字要跟護照一樣。',
-          '地鐵 B 線 Colosseo 站和新開的 <b>C 線 Colosseo/Fori Imperiali 站</b>就在門口，C 線站內有考古展示。',
-          '競技場和古羅馬廣場周邊扒手多，背包背前面。',
-          '穿防滑好走的鞋：遺跡區都是碎石和古羅馬石板路。',
+          '競技場 24h 票：<b>競技場 13:00 入場一次</b>，古羅馬廣場＋帕拉提諾山一次，可以在競技場之前或之後。',
+          '競技場和古羅馬廣場<b>入口是分開的</b>，看清楚票上寫的入口。',
+          '要訂位的三個：競技場（已訂 13:00）、Taverna 午餐 14:30、聖克萊門特 15:45。',
+          '地鐵 B 線 Colosseo 站和 C 線 Colosseo/Fori Imperiali 站就在門口。',
+          '週日梵蒂岡休館、阿皮亞古道週末管制，所以這天排古羅馬。',
         ],
       },
     },
@@ -453,7 +455,7 @@ window.TRIP = {
 
   /* ================= 須知 ================= */
   tipsCallouts: [
-    { tone: 'red', icon: '⏰', html: '<b>現在就要做</b>：梵蒂岡博物館 11/9 上午時段已售完（10/8 查），馬上訂；競技場 11/8 的票約 10/9 上架；Armando 11/10 的位子約 10/11 午夜開放。' },
+    { tone: 'red', icon: '⏰', html: '<b>現在就要做</b>：梵蒂岡博物館 11/9 上午時段已售完（10/8 查），馬上訂；Armando 11/10 的位子約 10/11 午夜開放。' },
     { tone: 'red', icon: '👜', html: '<b>扒手熱點</b>：64、40 號公車；Termini 車站；地鐵 A 線的 Termini、Spagna、Ottaviano 站；競技場、許願池、西班牙階梯、梵蒂岡排隊人潮。背包背前面，手機不要放後口袋。' },
     { tone: 'green', icon: '🕐', html: '<b>時差</b>：11/8–11/11 義大利是冬令時間（CET），<b>比台灣慢 7 小時</b>，羅馬早上 9 點＝台灣下午 4 點。上方的時鐘會自動換算。' },
   ],
@@ -474,7 +476,7 @@ window.TRIP = {
       items: [
         '完整清單和官方連結在<b>「指南 → 🎫 訂票」</b>。',
         '<b>梵蒂岡博物館</b>：11/9 上午已售完（10/8 查），盡快訂。',
-        '<b>競技場</b>：參觀日前 30 天開賣，11/8 的票約 10/9 上架。',
+        '<b>競技場</b>：11/8 13:00 時段。',
         '<b>Armando al Pantheon</b>：只接受官網訂位，11/10 的位子約 10/11 午夜（羅馬時間）開放。',
         '<b>博爾蓋塞美術館</b>：已開賣，週一休館。',
         '萬神殿 11 月的時段約 10 月中開賣。',
