@@ -34,7 +34,7 @@ window.TRIP = {
       items: [
         { id: 'restaurants', text: '訂其他要訂位的餐廳', note: 'La Taverna dei Fori Imperiali（Day 1 午餐 14:30，週二休）、Grappolo d\'Oro（Day 2 週一晚餐）。完整清單在「指南 → 訂票」。Da Enzo al 29（Day 4）不收訂位，現場排。', links: [['📝 Taverna 訂位', 'https://www.latavernadeiforiimperiali.com/'], ['📝 Grappolo 訂位', 'https://hosteriagrappolodoro.it/prenotazioni/']] },
         { id: 'sanclemente', text: '訂聖克萊門特地下遺跡 11/8（日）15:45', note: '€10，每天限量，週日 12:00–18:00 開放。', links: [['🎫 官方預約', 'https://www.basilicasanclemente.com/eng/booking/']] },
-        { id: 'pantheon', text: '訂萬神殿 11/9（一）9:00', note: '€7，11 月時段約 10 月中開賣；要先註冊 Musei Italiani 帳號。', links: [['🎫 官方訂票', 'https://portale.museiitaliani.it/b2c/buyTicketless/33f77159-0acd-40c4-8524-701f33aae108']] },
+        { id: 'pantheon', text: '訂萬神殿 11/9（一）9:00', note: '官方：每月時段在前一個月的月中開賣，<b>11 月的票約 10/15 前後上架</b>。現在先註冊 Musei Italiani 帳號。沒有「免排隊」選項，依抵達順序入場；票價以付款頁為準（官方頁面寫 €7 或 €5 不一）。', links: [['🎫 官方訂票', 'https://portale.museiitaliani.it/b2c/buyTicketless/33f77159-0acd-40c4-8524-701f33aae108']] },
         { id: 'catacomb', text: '預約聖賽巴斯蒂安地下墓穴 11/11（三）14:15', note: '€10 含導覽，官方建議先預約。', links: [['🎫 官方預約', 'https://catacombe.org/en/booking']] },
         { id: 'scooter', text: '預約機車（Day 4，11/11）', note: '125cc €58–68／天，押金 €500 起。非歐盟駕照要「本國駕照＋國際駕照」。', links: [['📝 Bici & Baci 預約', 'https://bicibaci.com/noleggio-biciclette-e-scooter/']] },
       ],
@@ -478,7 +478,7 @@ window.TRIP = {
         '<b>競技場</b>：11/8 13:00 時段。',
         '<b>Armando al Pantheon</b>：只接受官網訂位，11/10 的位子約 10/11 午夜（羅馬時間）開放。',
         '<b>博爾蓋塞美術館</b>：週一休館，目前待定。',
-        '萬神殿 11 月的時段約 10 月中開賣。',
+        '萬神殿：11 月的票約 10/15 前後開賣，先註冊帳號。',
       ],
     },
     {
