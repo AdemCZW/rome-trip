@@ -721,3 +721,32 @@ Object.assign(window.TRIP, {
   const H = {"Pasticceria Regoli": {"hours": {"o": "07:00", "c": "19:00", "closed": [2]}, "stay": 35}, "聖母大殿": {"hours": {"o": "07:00", "c": "19:00", "closed": []}, "stay": 40}, "古羅馬廣場＋帕拉提諾山": {"hours": {"o": "09:00", "c": "16:30", "last": "15:30", "closed": []}, "stay": 165}, "羅馬競技場": {"hours": {"o": "08:30", "c": "16:30", "last": "15:30", "closed": []}, "stay": 75}, "La Taverna dei Fori Imperiali": {"hours": {"o": "12:30", "c": "15:00", "closed": [2]}, "stay": 60}, "聖克萊門特教堂": {"hours": {"o": "12:00", "c": "18:00", "last": "17:30", "cw": {"0": "週日及國定假日 12:00–18:00（最後入場 17:30）；週一至週六 09:00–12:30、14:00–18:00"}, "closed": []}, "stay": 30}, "卡比托利歐山＋夕陽觀景": {"stay": 55}, "Monti 小巷散步＋Fatamorgana": {"hours": {"o": "12:00", "c": "22:00", "closed": []}, "stay": 70}, "Ai Tre Scalini": {"hours": {"o": "12:30", "c": "01:00", "closed": []}, "stay": 90}, "許願池": {"stay": 35}, "Tazza d'Oro": {"hours": {"o": "07:00", "c": "20:00", "closed": []}, "stay": 20}, "勝利之后聖母堂": {"hours": {"o": "08:30", "c": "18:00", "closed": [], "cw": {"1": "平日 08:30–12:00、15:30–18:00（中午休息）；假日只開 15:30–18:00"}}, "stay": 25}, "西班牙階梯": {"stay": 38}, "Via Margutta 藝術街": {"stay": 45}, "Antico Forno Roscioli": {"hours": {"o": "07:30", "c": "20:00", "closed": []}, "stay": 50}, "萬神殿": {"hours": {"o": "09:00", "c": "19:00", "last": "18:30", "closed": []}, "stay": 55}, "Sant'Eustachio Il Caffè": {"hours": {"o": "07:30", "c": "01:00", "closed": []}, "stay": 25}, "納沃納廣場＋Via dei Coronari": {"stay": 65}, "人民廣場": {"stay": 25}, "Pincio 露台": {"stay": 45}, "Via del Corso＋Via Condotti 逛街": {"stay": 100}, "Hosteria Grappolo d'Oro": {"hours": {"o": "12:30", "c": "22:30", "closed": [], "cw": {"1": "12:30–15:00、18:30–22:30"}}, "stay": 90}, "聖彼得大教堂": {"hours": {"o": "07:00", "c": "19:00", "closed": []}, "stay": 80}, "梵蒂岡博物館＋西斯汀禮拜堂": {"hours": {"o": "08:00", "c": "20:00", "last": "18:00", "closed": [0], "cw": {"2": "2026/11/10（週二）官網公告全館 08:00–09:00 臨時關閉，09:00 起開放，到 20:00"}}, "stay": 180}, "Pizzarium Bonci": {"hours": {"o": "11:00", "c": "22:00", "closed": []}, "stay": 35}, "Gelateria dei Gracchi＋Via Cola di Rienzo": {"hours": {"o": "11:30", "c": "24:00", "closed": []}, "stay": 50}, "聖天使堡＋頂樓夕陽": {"hours": {"o": "09:00", "c": "19:30", "last": "18:30", "closed": [1]}, "stay": 105}, "Via dei Coronari＋納沃納廣場": {"stay": 130}, "Armando al Pantheon": {"hours": {"o": "12:30", "c": "23:00", "closed": [0], "cw": {"2": "午餐 12:30–15:00，晚餐 18:00–23:00"}}, "stay": 100}, "Giolitti": {"hours": {"o": "07:00", "c": "24:00", "closed": []}, "stay": 30}, "取車：Bici & Baci": {"hours": {"o": "09:00", "c": "18:00", "closed": []}, "stay": 15}, "馬爾他騎士團鑰匙孔": {"stay": 15}, "橘子花園": {"hours": {"o": "07:00", "c": "18:00", "closed": []}, "stay": 20}, "真理之口": {"hours": {"o": "09:30", "c": "17:50", "closed": []}, "stay": 25}, "Testaccio 市場": {"hours": {"o": "07:00", "c": "15:30", "closed": [0]}, "stay": 35}, "Trapizzino 創始店": {"hours": {"o": "12:00", "c": "24:00", "closed": []}, "stay": 30}, "卡拉卡拉浴場": {"hours": {"o": "09:00", "c": "16:30", "last": "15:30", "closed": [1]}, "stay": 55}, "阿皮亞古道": {"stay": 15}, "聖賽巴斯蒂安地下墓穴": {"hours": {"o": "09:15", "c": "17:15", "last": "16:45", "closed": [1]}, "stay": 50}, "切奇莉亞・梅特拉墓": {"hours": {"o": "09:00", "c": "16:30", "last": "16:00", "closed": [1]}, "stay": 35}, "Gianicolo 山": {"stay": 40}, "還車（18:00 關門）": {"hours": {"o": "09:00", "c": "18:00", "closed": []}, "stay": 15}, "Trattoria Da Enzo al 29": {"hours": {"o": "18:30", "c": "22:30", "closed": [0]}, "stay": 100}, "Trastevere 夜遊＋Otaleg": {"hours": {"o": "12:00", "c": "24:00", "closed": []}, "stay": 60}};
   window.TRIP.days.forEach((d) => d.stops.forEach((s) => { if (H[s.name]) Object.assign(s, H[s.name]); }));
 })();
+
+/* ===== 住宿：Hotel Principe di Piemonte（2026-10-29 訂好）===== */
+(function () {
+  const T = window.TRIP;
+  const H = { name: 'Hotel Principe di Piemonte', lat: 41.8924, lng: 12.5138, addr: 'Via Giovanni Giolitti 449, 00185 Roma', q: 'Hotel Principe di Piemonte Via Giovanni Giolitti 449 Roma' };
+  T.hotel = H;
+  T.lead = T.lead.replace('四天行程排好路線', '住 <b>Hotel Principe di Piemonte</b>（特米尼東側、Porta Maggiore 旁，11/7 入住 4 晚）。四天行程排好路線');
+  // 每天從飯店出發（時間是依距離估算的，實際以當天為準）
+  const dep = (t, note) => ({ t, name: '飯店出發', it: H.name, kind: 'move', lat: H.lat, lng: H.lng, q: H.q, stay: 0, note, mode: 'walking' });
+  T.days[0].stops.unshift(dep('07:40', '飯店到 Pasticceria Regoli 約 1 公里，走 Via Giolitti 往西北再轉 Via dello Statuto，約 12–15 分（距離估算）。'));
+  T.days[1].stops.unshift(dep('07:15', '到許願池約 2.7 公里：走到 Termini 搭地鐵 A 線兩站到 Barberini，再走約 8 分；全程約 25–30 分（估算）。想省事就直接計程車，清晨車少約 10 分。'));
+  T.days[2].stops.unshift(dep('07:45', '到聖彼得大教堂：走到 Termini（約 15 分）搭地鐵 A 線到 Ottaviano（約 10 分），再走約 10 分；全程約 35–40 分（估算）。08:30 要進大教堂排安檢，不要晚出門。'));
+  T.days[3].stops.unshift(dep('08:35', '到租車行 Bici & Baci 約 1.5 公里，走路約 20 分（估算）。退房後先把行李寄放飯店櫃台（24 小時櫃檯，寄放要不要收費請問櫃台）。'));
+  // 當天小提醒
+  T.days[0].side.items.unshift('<b>11/7 晚上抵達</b>：22:00 到 FCO，Leonardo Express 末班約 23:27 到 Termini（€14、32 分）。從 Termini 到飯店還有約 1.2 公里，<b>深夜那段 Via Giolitti 人少，建議從 Termini 直接搭計程車</b>，或從機場就搭計程車（市中心固定價 €55，飯店在 Porta Maggiore 旁，多半適用，上車先問司機）。飯店 24 小時櫃檯，入住 14:00 起，晚到沒問題，但訂房後先寫信告知「約 23:30 後抵達」。');
+  T.days[3].side.items.unshift('退房當天：早上先把行李寄放櫃台，還車後回飯店拿行李再去機場。');
+  // 待辦
+  const g0 = T.todo[0].items;
+  const stay = g0.find((x) => x.id === 'stay');
+  if (stay) { stay.text = '住宿已訂：Hotel Principe di Piemonte（11/7–11/11）'; stay.note = '透過 amimir.com 訂的。入境可能被要求出示訂房證明、回程機票，把確認信存到手機。'; }
+  g0.splice(g0.indexOf(stay) + 1, 0,
+    { id: 'hotelconfirm', text: '寫信給飯店：確認訂房有進系統＋告知深夜抵達', note: 'amimir 是轉售平台，有旅客到了飯店才發現沒訂單。用你的姓名和日期問飯店「prenotazione confermata?」，並說 11/7 約 23:30 後到。沒回信就打電話。', links: [['飯店資訊（Booking）', 'https://www.booking.com/hotel/it/principe-di-piemonte-roma.zh-tw.html']] },
+    { id: 'citytax', text: '準備住宿稅現金：3 星每人每晚 €6，兩人 4 晚 €48', note: '訂房價不含，入住時現場付，多半只收現金。', links: [] },
+  );
+  // 必知
+  T.musts.unshift({ icon: '🏨', title: '住宿：Hotel Principe di Piemonte', text: 'Via Giovanni Giolitti 449（特米尼東側、Porta Maggiore 旁，離 Termini 約 1.2 公里、電車站 150 公尺）。3 星，Booking 8.4 分（2,077 則）。<b>24 小時櫃檯</b>，入住 14:00 起、晚到可以。住宿稅每人每晚 €6 現場付。 <a href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(H.q) + '&travelmode=walking" target="_blank" rel="noopener">導航到飯店 ↗</a>' });
+  // 訂票頁：機場到飯店
+  T.bookExtra.unshift({ when: '11/7 深夜', name: '機場 → 飯店', book: { label: '計程車固定價說明（羅馬市府）', url: 'https://www.comune.roma.it/web/it/scheda-servizi.page?contentId=INF48653', note: 'FCO → 市中心（Aurelian 城牆內）固定 €55，含行李、最多 4 人；或 Leonardo Express 到 Termini 再計程車。' } });
+})();
