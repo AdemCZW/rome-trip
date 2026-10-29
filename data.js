@@ -528,3 +528,190 @@ window.TRIP = {
     ['外交部領事事務局', 'https://www.boca.gov.tw/sp-foof-countrycp-03-53-ca74a-03-1.html'],
   ],
 };
+
+/* ===== 網站設定、退稅與付款方式（2026-10-29 加入；退稅資料逐項查證，來源寫在各段） ===== */
+Object.assign(window.TRIP, {
+  cfg: {
+    key: 'rome', center: [41.8986, 12.4769], tz: 'Europe/Rome', city: '羅馬', host: 'rome-trip-dgn.pages.dev',
+    cur: 'EUR', sym: '€', dec: 2, curName: '歐元', fxUnit: 1, fxBig: 100, fxFallback: 35,
+    sunset: '16:55', airport: '菲烏米奇諾', taxNewFrom: null, taxRate: 0.22, preTaxThreshold: false, hours: [],
+  },
+  tax: {
+ "intro": [
+  {
+   "tone": "red",
+   "icon": "⚠️",
+   "html": "<b>義大利門檻：每張發票（同一家店）含稅超過 €70</b>（Planet 寫成 €70.01）。2024/2/1 前是 €154.94，網路上舊文章的數字已過時。商品要在<b>開立發票後第 3 個月底前</b>帶出歐盟，並在<b>最後離開歐盟的機場</b>由海關電子確認（OTELLO 系統）。 <a href=\"https://ntplusfisco.ilsole24ore.com/art/tax-free-shopping-debutta-sistema-validazione-unica-AIDEVnbD\" target=\"_blank\" rel=\"noopener\">Il Sole 24 Ore ↗</a>・<a href=\"https://taxfree.weareplanet.com/countries/italy\" target=\"_blank\" rel=\"noopener\">Planet 義大利規則 ↗</a>"
+  },
+  {
+   "tone": "red",
+   "icon": "✈️",
+   "html": "<b>11/11 晚上從 FCO 走，要先確認是不是直飛</b>：華航 CI076 羅馬直飛桃園是<b>早上 11:00</b> 起飛（AeroRoutes），晚上的班機多半是轉機。<b>直飛或轉機到歐盟外</b>（例如杜拜、伊斯坦堡、香港）→ 在 FCO 全部辦完。<b>經另一個歐盟／申根機場轉機</b>→ 託運行李裡的商品仍要在 FCO 海關辦，隨身行李裡的商品要到最後一個歐盟機場辦（Planet 說明）。 <a href=\"https://www.aeroroutes.com/eng/251016-cins26fco\" target=\"_blank\" rel=\"noopener\">AeroRoutes 華航羅馬航班 ↗</a>・<a href=\"https://taxfree.weareplanet.com/countries/italy\" target=\"_blank\" rel=\"noopener\">Planet 轉機說明 ↗</a>"
+  },
+  {
+   "tone": "blue",
+   "icon": "🧾",
+   "html": "兩個人要<b>各自用自己的護照結帳</b>：發票開在出示護照的買方名下，2026/7/1 起的「單一驗證」也只合併同一買方的發票，兩人的消費不能合算。標「未查證」的店，官方沒公布細節，現場問店員用哪一家退稅公司、手續費多少。"
+  }
+ ],
+ "regimes": [
+  {
+   "id": "refund",
+   "name": "義大利 Tax Free（退稅制）",
+   "label": "11/8–11/11 購買",
+   "from": "2026-11-08",
+   "to": "2026-11-11",
+   "min": 70.01,
+   "tone": "info",
+   "title": "先付含稅價，離境時海關確認後才退",
+   "steps": [
+    "<b>同一家店、同一張發票含稅超過 €70</b>（Planet 寫 €70.01）。McArthurGlen 寫的是「同店同日」；不同店、不同天<b>不能合算</b>。",
+    "條件：<b>永久居住在歐盟以外</b>（台灣護照即可），商品是個人或家庭自用，裝在行李裡帶出歐盟。",
+    "結帳時出示<b>護照正本</b>，店家透過 OTELLO 開電子 Tax Free 發票，同時給你退稅公司的單據（Global Blue、Planet 等）。",
+    "離境當天，<b>託運行李裡的商品要在報到託運前</b>先到海關確認；FCO 海關在第 1、第 3 航廈出境大廳和 A、E 登機區（ADR 官網）。",
+    "確認後到退稅公司櫃台領錢：第 3 航廈出境大廳 196–225 號報到櫃台附近、第 1 航廈 111–140 號附近、E 登機區 ADR 服務台旁（ADR 官網）。也可以用自助機和專用郵筒。",
+    "2026/7/1 起有「單一驗證」：同一買方在不同店、不同退稅公司的發票，可以在一家退稅公司一次驗證；<b>前提是店家與退稅公司都有參加</b>，現場問清楚（Il Sole 24 Ore）。",
+    "商品出境前<b>不要使用</b>；海關確認時要帶護照、填好的單據、收據和未使用的商品（Planet）。"
+   ],
+   "src": "<a href=\"https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-immigration-and-customs\" target=\"_blank\" rel=\"noopener\">ADR 機場官網：海關與退稅 ↗</a>・<a href=\"https://ntplusfisco.ilsole24ore.com/art/tax-free-shopping-debutta-sistema-validazione-unica-AIDEVnbD\" target=\"_blank\" rel=\"noopener\">Il Sole 24 Ore ↗</a>・<a href=\"https://taxfree.weareplanet.com/countries/italy\" target=\"_blank\" rel=\"noopener\">Planet ↗</a>"
+  }
+ ],
+ "cats": [
+  {
+   "k": "luxury",
+   "icon": "💎",
+   "label": "精品（Via Condotti）"
+  },
+  {
+   "k": "dept",
+   "icon": "🏬",
+   "label": "百貨"
+  },
+  {
+   "k": "street",
+   "icon": "👕",
+   "label": "服飾街（Via del Corso）"
+  },
+  {
+   "k": "outlet",
+   "icon": "🛍️",
+   "label": "Outlet"
+  },
+  {
+   "k": "daily",
+   "icon": "💊",
+   "label": "超市・藥妝"
+  }
+ ],
+ "shopSub": "門檻都是<b>同一張發票含稅超過 €70</b>。官方沒寫分店細節的都標「未查證」，現場問「用哪家退稅公司、手續費多少、能不能退到卡」。",
+ "shops": [
+  {
+   "name": "Rinascente（Via del Tritone 61）",
+   "cat": "dept",
+   "area": "Via del Tritone",
+   "ok": "yes",
+   "min": "€70.01",
+   "note": "羅馬旅遊局官方頁面列出<b>Tax Free Service</b>、VIP 服務台。同一天在館內不同品牌櫃的消費能否合成一張單、退稅櫃台在幾樓，只有商業部落格（withprive）提到，未查證。店內也列了「動態貨幣轉換」服務，刷卡時選<b>歐元</b>。",
+   "url": "https://turismoroma.it/en/places/la-rinascente-del-tritone"
+  },
+  {
+   "name": "Rinascente（Piazza Fiume）",
+   "cat": "dept",
+   "area": "Piazza Fiume",
+   "ok": "unknown",
+   "min": "€70.01",
+   "note": "未查證：沒有查到這家分店的官方退稅說明，現場問。",
+   "url": ""
+  },
+  {
+   "name": "Coin",
+   "cat": "dept",
+   "area": "羅馬市區",
+   "ok": "unknown",
+   "min": "€70.01",
+   "note": "未查證：只有商業部落格（withprive）寫 Via Cola di Rienzo 店有退稅服務，沒有查到 Coin 官方說明。",
+   "url": "https://www.withprive.com/en/shopping/cities/rome"
+  },
+  {
+   "name": "Castel Romano Designer Outlet",
+   "cat": "outlet",
+   "area": "羅馬南郊",
+   "ok": "yes",
+   "min": "€70.01",
+   "note": "官方：同店同日 €70.01 以上，購買後 90 天內離開歐盟；<b>每張收據拿一張退稅單</b>。園區 Guest Services（Piazza Elefante）前有 Forexchange 退稅櫃台，每天 9:30–20:00，可<b>當場先領</b>；之後仍要在機場辦海關確認。手續費與退現金／退卡方式官方頁沒寫（未查證）。",
+   "url": "https://www.mcarthurglen.com/es/centres/it/Designer-Outlet-Castel-Romano/services/Devoluci%C3%B3n-de-impuestos/"
+  },
+  {
+   "name": "Via Condotti 精品（Bulgari、Gucci、Prada 等）",
+   "cat": "luxury",
+   "area": "Via Condotti",
+   "ok": "unknown",
+   "min": "€70.01",
+   "note": "未查證：沒有查到各品牌羅馬店的官方退稅說明。商業部落格寫 Bulgari 用 Global Blue 或 Planet，未經品牌證實。精品單價高，留意 Planet 現金退款上限 €1,000、預先退到卡上限 €3,000。",
+   "url": "https://www.withprive.com/en/shopping/cities/rome"
+  },
+  {
+   "name": "Via del Corso 連鎖服飾（Zara、H&M、Sephora 等）",
+   "cat": "street",
+   "area": "Via del Corso",
+   "ok": "unknown",
+   "min": "€70.01",
+   "note": "未查證：各店是否辦 Tax Free 沒有官方資料，結帳前先問；單張發票要超過 €70。",
+   "url": ""
+  },
+  {
+   "name": "超市・藥妝",
+   "cat": "daily",
+   "area": "全區",
+   "ok": "unknown",
+   "min": "€70.01",
+   "note": "未查證：沒有查到超市或藥妝店參加 Tax Free 的官方資料；義大利媒體對食品飲料能否退稅說法不一。單張收據通常不到 €70，<b>預設當作不能退</b>。",
+   "url": "https://www.businessonline.it/news/tax-free-2026-cosa-devono-fare-i-turisti-stranieri-per-recuperare-iva-e-istruzioni-per-loro-e-negozianti_n82836.html"
+  }
+ ],
+ "tips": [
+  {
+   "title": "📁 收據怎麼整理",
+   "items": [
+    "<b>每人、每家店分開放</b>：護照、Tax Free 單、店家發票、商品放在一起。",
+    "要退稅的商品盡量放<b>隨身行李</b>；放託運的話，一定要先過海關再託運（ADR 官網）。",
+    "Castel Romano 每張收據各拿一張退稅單（McArthurGlen 官方）。"
+   ]
+  },
+  {
+   "title": "⏰ 11/11 機場時間（晚班機要注意）",
+   "items": [
+    "Planet 在 FCO 的櫃台：第 3 航廈出境（管制區外）223/224 報到櫃台旁，每天 07:00–19:45；第 3 航廈 E 區（管制區內）07:00–15:00；第 1 航廈出境 07:00–19:45（Planet 官網）。<b>晚班機到機場時 Planet 櫃台可能已關</b>。",
+    "Global Blue 等櫃台的時間，只查到第三方說法「約 07:00–22:00」，官方沒公布（未查證）。",
+    "櫃台關了也還是要<b>先讓海關確認</b>，之後用自助機或專用郵筒寄回（ADR 官網、Planet）。",
+    "建議多預留時間，旺季要排隊（第三方建議 60–90 分鐘，未查證）。"
+   ]
+  },
+  {
+   "title": "💶 退現金還是退卡",
+   "items": [
+    "Planet 在 FCO 第 3 航廈領現金的手續費：€0–24.99 收 €3、€25–99.99 收 €6、€100–199.99 收 €8、€200–800 收 €12、超過 €800 收 1.5%；第 1 航廈不收現金手續費（Planet 官網）。",
+    "Planet 現金退款每人最多 €1,000（Planet 官網）。",
+    "Global Blue、Innova 的手續費沒有查到官方資料（未查證）。退到 22% 增值稅的全額不可能，扣掉手續費後實拿多少，現場確認。"
+   ]
+  },
+  {
+   "title": "❌ 常見錯誤",
+   "items": [
+    "海關確認前就把裝有退稅商品的行李託運了。",
+    "經歐盟城市轉機，卻以為隨身行李的商品要在羅馬辦（要在最後一個歐盟機場辦）。",
+    "兩個人想合起來湊 €70（發票是各自名下）。",
+    "刷卡時選了台幣（DCC）。"
+   ]
+  },
+  {
+   "title": "💳 付款",
+   "items": [
+    "台灣信用卡海外交易手續費一般約 1.5%（美國運通 2%）；刷卡機問要用哪種貨幣時<b>選歐元</b>，選台幣（DCC）手續費可能 3–4%。 <a href=\"https://www.cashfeel.com.tw/article/%e6%b5%b7%e5%a4%96%e5%88%b7%e5%8d%a1-%e6%89%8b%e7%ba%8c%e8%b2%bb-%e6%b6%88%e8%b2%bb%e5%ae%9a%e7%be%a9-%e5%8c%af%e7%8e%87\" target=\"_blank\" rel=\"noopener\">理財網站說明 ↗</a>"
+   ]
+  }
+ ],
+ "src": "<a href=\"https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-immigration-and-customs\" target=\"_blank\" rel=\"noopener\">ADR 機場官網 ↗</a>・<a href=\"https://taxfree.weareplanet.com/countries/italy\" target=\"_blank\" rel=\"noopener\">Planet 義大利規則 ↗</a>・<a href=\"https://taxfree.weareplanet.com/refund-locations?country=it\" target=\"_blank\" rel=\"noopener\">Planet FCO 櫃台 ↗</a>・<a href=\"https://ntplusfisco.ilsole24ore.com/art/tax-free-shopping-debutta-sistema-validazione-unica-AIDEVnbD\" target=\"_blank\" rel=\"noopener\">Il Sole 24 Ore（2026 單一驗證） ↗</a>・<a href=\"https://www.mcarthurglen.com/es/centres/it/Designer-Outlet-Castel-Romano/services/Devoluci%C3%B3n-de-impuestos/\" target=\"_blank\" rel=\"noopener\">McArthurGlen Castel Romano ↗</a>"
+},
+  payments: ["現金", "信用卡（台灣卡；DCC 一律選歐元 EUR，不選台幣）", "金融卡", "行動支付（Apple Pay／Google Pay）", "其他"],
+});

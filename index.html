@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
+  <script>if (/github\.io$/.test(location.hostname)) location.replace("https://rome-trip-dgn.pages.dev/" + location.hash);</script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#eef0f3" media="(prefers-color-scheme: light)" />
@@ -8,7 +9,10 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>ROMA · 4 天行程</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icon-180.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-title" content="ROMA 2026" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -40,11 +44,12 @@
           <label class="field">出發日 <input type="date" id="startDate" /></label>
           <a class="btn primary" href="#plan" data-go="plan">看每日行程 →</a>
         </div>
+        <div class="cloudbar" id="cloudBar"></div>
         <div class="stats" id="stats"></div>
         <div class="swipe-hint" id="swipeHint">← 左右滑動切換頁面 →</div>
 
         <h2 class="h2">出發前待辦 <span class="cnt" id="todoCnt"></span></h2>
-        <p class="sub">打勾會記在這台裝置上。要買票、申請的項目都附官方連結。</p>
+        <p class="sub">打勾會記在這台裝置上（開啟上方雲端同步後也會存到雲端）。要買票、申請的項目都附官方連結。</p>
         <div class="progress"><i id="todoBar"></i></div>
         <div id="todoBody"></div>
 
@@ -60,7 +65,7 @@
     <!-- 2 每日行程 -->
     <section class="page" id="plan" data-title="行程">
       <div class="page-in">
-        <div class="day-tabs" id="dayTabs" role="tablist"></div>
+        <div id="dayTabsMark" aria-hidden="true"></div><div class="day-tabs" id="dayTabs" role="tablist"></div>
         <div class="day-wrap">
           <div class="day-body" id="dayBody"></div>
           <aside class="day-aside">
@@ -90,7 +95,17 @@
       </div>
     </section>
 
-    <!-- 5 指南：交通／租機車／須知 -->
+    <!-- 5 購物：退稅指南＋購物紀錄核對 -->
+    <section class="page" id="shop" data-title="購物">
+      <div class="page-in">
+        <div class="seg" id="shopSeg" role="tablist"></div>
+        <div class="shop-pane" id="shopTax" data-pane="tax"></div>
+        <div class="shop-pane" id="shopLedger" data-pane="ledger" hidden></div>
+        <div class="shop-pane" id="shopExp" data-pane="exp" hidden></div>
+      </div>
+    </section>
+
+    <!-- 6 指南：訂票／交通／須知 -->
     <section class="page" id="guide" data-title="指南">
       <div class="page-in">
         <div class="seg" id="guideSeg" role="tablist"></div>

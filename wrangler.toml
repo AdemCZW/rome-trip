@@ -1,0 +1,10 @@
+name = "rome-trip"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-01"
+
+[[kv_namespaces]]
+binding = "PLAN"
+id = "6cc1853fc880498fa08f0bb472400365"
+
+[ai]
+binding = "AI"
