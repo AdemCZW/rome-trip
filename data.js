@@ -750,3 +750,121 @@ Object.assign(window.TRIP, {
   // 訂票頁：機場到飯店
   T.bookExtra.unshift({ when: '11/7 深夜', name: '機場 → 飯店', book: { label: '計程車固定價說明（羅馬市府）', url: 'https://www.comune.roma.it/web/it/scheda-servizi.page?contentId=INF48653', note: 'FCO → 市中心（Aurelian 城牆內）固定 €55，含行李、最多 4 人；或 Leonardo Express 到 Termini 再計程車。' } });
 })();
+
+/* ===== 航班：土耳其航空 TK125／TK1361（11/7 21:55 到 FCO T3）、TK1864／TK024（11/11 19:25 從 T3 起飛），2026-10-29 查證 ===== */
+(function () {
+  const T = window.TRIP;
+  const A = (label, url) => ' <a href="' + url + '" target="_blank" rel="noopener">' + label + ' ↗</a>';
+  const SRC = {
+    tk: 'https://www.turkishairlines.com/en-int/any-questions/check-in/',
+    le: 'https://www.trenitalia.com/it/regionale/collegamenti-regionale/leonardo-express.html',
+    adrTrain: 'https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-train',
+    adrTaxi: 'https://adr.it/web/aeroporti-di-roma-en/pax-fco-taxi',
+    adrCustoms: 'https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-immigration-and-customs',
+    ees: 'https://www.thelocal.es/20260720/airport-bosses-warn-eus-new-border-checks-triple-waiting-times-for-brits',
+    planet: 'https://taxfree.weareplanet.com/refund-locations?country=it',
+    bb: 'https://bicibaci.com/noleggio-biciclette-e-scooter/',
+  };
+  const H = T.hotel;
+  const FCO = { lat: 41.8003, lng: 12.2389, q: 'Aeroporto di Roma Fiumicino Terminal 3 Partenze' };
+  const TERMINI = { lat: 41.9009, lng: 12.5020, q: 'Roma Termini' };
+
+  /* ---- lead ---- */
+  T.lead = T.lead.replace('四天行程排好路線', '土耳其航空：11/7 21:55 到 FCO 第 3 航廈（TK125＋TK1361），11/11 19:25 從第 3 航廈起飛（TK1864＋TK024），行李直掛。四天行程排好路線');
+
+  /* ---- Day 1：抵達 ---- */
+  const d1 = T.days[0];
+  d1.side.items[0] = '<b>11/7 晚上抵達</b>：TK1361 <b>21:55 到 FCO 第 3 航廈</b>（伊斯坦堡轉機，行李直掛）。台灣護照走非歐盟通道，要按指紋、拍臉登錄 EES（2025/10/12 起上線，有自助機）；機場主管 2026/7 受訪說非歐盟旅客平均從 7 分鐘變 20 分鐘，尖峰更久，<b>抓 30–60 分鐘過關＋領行李</b>，約 22:30–23:00 出關。Leonardo Express 從機場<b>末班 23:27</b>（€14、32 分到 Termini，約 15 分一班），車站在航廈旁、跟著火車標示走，官方沒寫走路幾分鐘，抓 10 分鐘。從 Termini 到飯店還有約 1.2 公里，<b>深夜那段 Via Giolitti 人少，建議從 Termini 直接搭計程車</b>；或從機場就搭計程車：ADR 官網寫<b>羅馬市中心（Aurelian 城牆內）固定 €55</b>，雙向適用、已含所有加價，第 3 航廈入境樓層外的排班站上車。飯店在 Porta Maggiore（城牆的城門）旁，是否算城牆內上車先問司機。飯店 24 小時櫃檯，晚到沒問題，但先寫信告知「約 23:30 後抵達」。'
+    + A('ADR：入境與 EES', SRC.adrCustoms) + '・' + A('The Local：FCO EES 等候時間', SRC.ees) + '・' + A('Trenitalia：Leonardo Express', SRC.le) + '・' + A('ADR：機場火車站', SRC.adrTrain) + '・' + A('ADR：計程車固定價', SRC.adrTaxi);
+
+  /* ---- Day 4：重排（19:25 起飛） ---- */
+  const d4 = T.days[3];
+  const old = Object.fromEntries(d4.stops.map((s) => [s.name, s]));
+  const pick = (name, t, stay, extra) => Object.assign({}, old[name], { t, stay }, extra || {});
+  d4.stops = [
+    pick('飯店出發', '08:35', 0, { note: '到租車行 Bici & Baci 約 1.5 公里，走路約 20 分（估算）。<b>退房後先把行李寄放飯店櫃台</b>（24 小時櫃檯，寄放要不要收費請問櫃台），15:05 回來拿。' }),
+    pick('取車：Bici & Baci', '09:00', 15, { note: old['取車：Bici & Baci'].note + ' 官網：11/1–3/31 每天 9:00–18:00；今天要趕飛機，<b>14:30 還車</b>。' }),
+    pick('馬爾他騎士團鑰匙孔', '09:30', 15),
+    pick('橘子花園', '09:50', 20),
+    pick('真理之口', '10:15', 20, { note: old['真理之口'].note + ' 10:35 出發往阿皮亞古道，騎約 20 分。' }),
+    pick('阿皮亞古道', '11:00', 10),
+    pick('聖賽巴斯蒂安地下墓穴', '11:15', 50, { note: old['聖賽巴斯蒂安地下墓穴'].note + ' <b>班機提早，預約改訂 11:15 前後的場次</b>（原本排 14:15 會來不及）。' }),
+    pick('切奇莉亞・梅特拉墓', '12:15', 25, { note: '古道上最有名的圓形陵墓。<b>過了這裡約 200 m 起只限居民、行人、自行車</b>，機車停好、走一段古羅馬石板路拍照就好。12:40 出發回 Testaccio（約 20 分）。', tags: [['機車到此為止', 'warn']] }),
+    pick('Testaccio 市場', '13:05', 35, { note: old['Testaccio 市場'].note + ' 今天是午餐主場，Mordi e Vai 14:30 前還在。' }),
+    pick('Trapizzino 創始店', '13:45', 25, { note: old['Trapizzino 創始店'].note + ' 14:10 出發還車：走 Via Marmorata → 台伯河岸或 Via Cavour 到 Termini，約 20 分，<b>不要穿過 Tridente 區</b>。' }),
+    pick('還車（18:00 關門）', '14:30', 15, { name: '還車：Bici & Baci（14:30）', it: '加滿油還車', note: '租車行 11 月開到 18:00，但要趕 19:25 的飛機，<b>14:30 前還車</b>。還車前自助加油（Self）加滿，和店員一起看車身、拿回押金預授權的收據。', tags: [['14:30 前', 'bad']] }),
+    { t: '14:45', name: '回飯店拿行李', it: H.name, kind: 'move', lat: H.lat, lng: H.lng, q: H.q, stay: 25, mode: 'walking', note: '從 Bici & Baci 走回飯店約 1.5 公里、20 分（估算）；帶兩人行李再走回 Termini 不輕鬆，也可以在飯店直接叫計程車到 Termini（itTaxi／060609）或一路到機場。' },
+    { t: '15:10', name: '前往 Termini', it: '走路或計程車，約 1.2 km', kind: 'move', lat: TERMINI.lat, lng: TERMINI.lng, q: TERMINI.q, stay: 25, mode: 'walking', note: '走 Via Giolitti 約 15–20 分（估算）。到了 Termini 跟著 Leonardo Express／Aeroporto 的標示找月台（月台號碼未查證，看現場螢幕），先在 App 買票或直接刷感應式信用卡進站。', tags: [['最晚 15:10 離開飯店', 'bad']] },
+    { t: '15:35', name: 'Leonardo Express → FCO', it: '32 分直達機場', kind: 'move', lat: TERMINI.lat, lng: TERMINI.lng, q: 'Roma Termini Leonardo Express', stay: 32, mode: 'transit', note: '約 15 分一班（部分時段 30 分），Termini 發車 04:50–23:05；<b>最晚搭 15:50 前後的班次</b>。€14，紙本票要在閘門驗票，App 票限搭指定車次。下車後跟著航廈標示走到第 3 航廈（官方沒寫分鐘數，抓 10 分）。替代：飯店叫計程車直達機場，城牆內出發固定 €55，下午車多抓 45–60 分，一樣 15:10 出發。', book: { label: 'Trenitalia 時刻', url: SRC.le } },
+    { t: '16:20', name: 'FCO 第 3 航廈：退稅 → 報到託運', it: '起飛前 3 小時到', kind: 'move', lat: FCO.lat, lng: FCO.lng, q: FCO.q, stay: 110, note: '順序：<b>① 先去海關</b>（第 3 航廈出境大廳）讓 Tax Free 單電子確認（OTELLO），要退稅的商品先不要託運、帶著給海關看；<b>② 到 196–225 號報到櫃台附近的 Global Blue／Planet 櫃台領錢</b>（Planet 第 3 航廈櫃台 07:00–19:45，來得及）；<b>③ 再去土耳其航空櫃台託運</b>。土航官網：國際線櫃台<b>起飛前 60 分鐘關閉（18:25）</b>，就算線上報到過、沒行李也要在關櫃前到櫃台；線上報到開放起飛前 24 小時到 90 分鐘。伊斯坦堡不在歐盟，隨身行李裡的退稅商品也在這裡一次辦完。', tags: [['海關 → 退稅 → 託運', 'warn'], ['櫃台 18:25 關', 'bad']], book: { label: '土航報到規定', url: SRC.tk } },
+    { t: '18:10', name: '安檢＋出境護照查驗 → 登機門', it: '離開申根區也走 EES', kind: 'move', lat: FCO.lat, lng: FCO.lng, q: FCO.q, stay: 75, note: '出境也要過護照查驗（EES 登錄出境，非歐盟通道）。登機門看螢幕，登機時間以登機證為準（通常起飛前 45 分左右開始，未查證）。' },
+    { t: '19:25', name: 'TK1864 起飛 → 伊斯坦堡', it: 'IST 00:05 到，01:55 接 TK024，11/12 17:40 到桃園', kind: 'move', lat: FCO.lat, lng: FCO.lng, q: FCO.q, stay: 0, note: '行李直掛桃園，在伊斯坦堡只要走轉機通道、過一次安檢，不用再領行李。' },
+  ];
+  d4.summary = '11/11（三）。19:25 從 FCO 起飛，所以機車只騎到 14:30：早上從阿文提諾山的鑰匙孔、真理之口騎到阿皮亞古道看地下墓穴和石板路，回 Testaccio 市場吃午餐，14:30 還車、回飯店拿行李，15:35 前後搭 Leonardo Express，16:20 到第 3 航廈先退稅再託運。原本的卡拉卡拉浴場、Gianicolo 夕陽、Da Enzo 晚餐和 Trastevere 夜遊都拿掉。11 月平均約 3 天下 1 天雨，下雨就改搭公車＋計程車（見右側）。';
+  d4.tags = [['機車日（14:30 前還）', 'info'], ['要國際駕照＋台灣駕照', 'bad'], ['19:25 起飛，15:10 離開飯店', 'bad']];
+  d4.side.items = [
+    '<b>時間倒推</b>：19:25 起飛 → 土航櫃台 18:25 關 → 16:20 到第 3 航廈（先海關、退稅，再託運） → 最晚 15:50 前後的 Leonardo Express → <b>15:10 離開飯店</b> → 14:45 回飯店拿行李 → <b>14:30 還車</b>。' + A('土航報到規定', SRC.tk) + '・' + A('Planet FCO 櫃台時間', SRC.planet) + '・' + A('ADR 海關與退稅', SRC.adrCustoms),
+    '退房當天：早上先把行李寄放櫃台，還車後回飯店拿行李再去機場。要退稅的商品放在容易拿出來的地方，海關可能要看。',
+    '地下墓穴的預約<b>改訂 11:15 前後</b>（原本 14:15 來不及還車）。',
+    '<b>Tridente 區（西班牙廣場、Via del Corso 一帶）平日 06:30–19:00 禁止機車進入</b>，違規會被拍照，罰單經租車行轉寄另收手續費。從 Testaccio 回 Termini 走 Via Cavour 或台伯河岸就不會經過。',
+    'Bici & Baci 官網：11/1–3/31 每天 9:00–18:00；還車時加滿油、拿回押金收據。' + A('Bici & Baci 官網', SRC.bb),
+    '石板路下雨很滑，電車軌道要垂直跨過去。',
+    '<b>沒有機車駕照</b>：早上走路逛阿文提諾和真理之口，B 線到 Circo Massimo 轉 118 號公車到阿皮亞古道，午餐回 Testaccio，一樣 15:10 離開飯店。',
+    '<b>下雨備案</b>：不要騎車，改地鐵 B 線＋118 公車，或乾脆把早上留給 Termini 附近，提早到機場逛免稅店。',
+  ];
+
+  /* ---- 退稅：FCO 是最後離開歐盟的機場 ---- */
+  T.tax.intro[1] = {
+    tone: 'red', icon: '✈️',
+    html: '<b>11/11 19:25 搭土耳其航空 TK1864 經伊斯坦堡回台北，伊斯坦堡不在歐盟，所以 FCO 就是最後離開歐盟的機場：託運和隨身行李裡的退稅商品，全部在 FCO 第 3 航廈辦完。</b>順序是先海關確認、再退稅櫃台領錢、最後才託運。16:20 到機場，Planet 第 3 航廈櫃台開到 19:45，來得及；土航櫃台 18:25 關。' + A('Planet 轉機說明', 'https://taxfree.weareplanet.com/countries/italy') + '・' + A('Planet FCO 櫃台', SRC.planet) + '・' + A('ADR 海關與退稅', SRC.adrCustoms),
+  };
+  const tt = T.tax.tips.find((x) => x.title.indexOf('11/11 機場時間') >= 0);
+  if (tt) {
+    tt.title = '⏰ 11/11 機場時間（19:25 起飛）';
+    tt.items[0] = 'Planet 在 FCO 的櫃台：第 3 航廈出境（管制區外）223/224 報到櫃台旁，每天 07:00–19:45；第 3 航廈 E 區（管制區內）07:00–15:00；第 1 航廈出境 07:00–19:45（Planet 官網）。<b>16:20 到機場，管制區外的櫃台還開著</b>；過了安檢 E 區的櫃台已關，所以領錢要在託運前辦完。';
+    tt.items.push('土耳其航空國際線櫃台<b>起飛前 60 分鐘關閉（18:25）</b>，從 16:20 到 18:25 有約 2 小時辦海關、退稅、託運。' + A('土航報到規定', SRC.tk));
+  }
+
+  /* ---- 待辦 ---- */
+  const g0 = T.todo[0].items;
+  const stayIdx = g0.findIndex((x) => x.id === 'stay');
+  g0.splice(stayIdx, 0, {
+    id: 'flights',
+    text: '機票已訂：土耳其航空 TK125／TK1361 去、TK1864／TK024 回，FCO 都在第 3 航廈',
+    note: '去程 11/7 TPE 11:00 → IST 19:10，TK1361 IST 21:10 → <b>FCO 21:55（第 3 航廈）</b>。回程 11/11 <b>TK1864 FCO 19:25（第 3 航廈）</b> → IST 00:05，TK024 IST 01:55 → TPE 11/12 17:40。行李直掛。線上報到：起飛前 24 小時開放、90 分鐘截止（去程 11/6 11:00 起、回程 11/10 19:25 起）；國際線櫃台起飛前 60 分鐘關。',
+    links: [['土航報到規定', SRC.tk]],
+  });
+  const bor = g0.find((x) => x.id === 'borghese');
+  if (bor) bor.note = '週一休館、11/10 下午排了梵蒂岡；11/11 班機 19:25 起飛、上午排了機車，所以這趟不排。€18，強制預約。';
+  const g1 = T.todo[1].items;
+  const cat = g1.find((x) => x.id === 'catacomb');
+  if (cat) { cat.text = '預約聖賽巴斯蒂安地下墓穴 11/11（三）11:15'; cat.note = '€10 含導覽，官方建議先預約。<b>訂 11:15 前後的場次</b>（19:25 班機，14:30 要還車）。'; }
+  const sc = g1.find((x) => x.id === 'scooter');
+  if (sc) sc.note += ' 官網 11 月營業 9:00–18:00，但 11/11 要趕飛機，<b>14:30 前還車</b>。';
+  const rs = g1.find((x) => x.id === 'restaurants');
+  if (rs) rs.note = rs.note.replace('Da Enzo al 29（Day 4）不收訂位，現場排。', 'Da Enzo al 29 原本排在 Day 4 晚餐，因為 19:25 的班機已拿掉。');
+  g1.push({
+    id: 'taxfco',
+    text: '退稅：11/11 在 FCO 第 3 航廈一次辦完（先海關 → 退稅櫃台 → 託運）',
+    note: '經伊斯坦堡轉機，伊斯坦堡不在歐盟，FCO 是最後離開歐盟的機場，託運＋隨身的 Tax Free 單都在這裡辦。16:20 到機場，Planet 櫃台開到 19:45、土航櫃台 18:25 關。每人各自的護照、單據、收據、未使用商品放一起。',
+    links: [['ADR 海關與退稅', SRC.adrCustoms], ['Planet FCO 櫃台', SRC.planet]],
+  });
+
+  /* ---- 訂票頁：機場來回 ---- */
+  const be = T.bookExtra.find((x) => x.name === '機場 → 飯店');
+  if (be) {
+    be.when = '11/7 21:55 到 T3';
+    be.book.label = '計程車固定價（ADR 官網）';
+    be.book.url = SRC.adrTaxi;
+    be.book.note = 'TK1361 21:55 到第 3 航廈，EES 按指紋抓 30–60 分出關。計程車：市中心（Aurelian 城牆內）固定 €55，雙向適用、含所有加價，第 3 航廈入境樓層外排班站上車，飯店在 Porta Maggiore 城門旁、上車先問。或 Leonardo Express（末班 23:27，€14、32 分）到 Termini 再計程車到飯店（約 1.2 km，深夜不建議走）。';
+  }
+  T.bookExtra.splice(1, 0, {
+    when: '11/11 19:25 從 T3 起飛',
+    name: '飯店 → FCO（15:10 出發）',
+    book: {
+      label: 'Trenitalia：Leonardo Express',
+      url: SRC.le,
+      note: '最晚 15:10 離開飯店：走 15–20 分到 Termini，搭 15:35–15:50 的 Leonardo Express（Termini 發車 04:50–23:05，約 15 分一班，€14、32 分），16:20 到第 3 航廈。或飯店叫計程車直達（城牆內固定 €55，下午抓 45–60 分）。到了先海關＋退稅，再到土航櫃台託運（18:25 關）。',
+    },
+  });
+})();
