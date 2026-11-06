@@ -1409,7 +1409,8 @@
       }
     });
     const times = d.stops.map((s) => toMin(s.t)).filter((x) => x !== null);
-    if (times.length > 1) {
+    // 搭機的旅行日跨時區，「排太長」「末班車」不適用
+    if (times.length > 1 && !d.travel) {
       const span = times[times.length - 1] - times[0];
       if (span > 13 * 60) add('warn', -1, `這天從 ${fromMin(times[0])} 排到 ${fromMin(times[times.length - 1])}，共 ${fmtDur(span)}，很累。`);
       if (times[times.length - 1] > 22 * 60 + 30) add('warn', -1, `這天最後一站排到 ${fromMin(times[times.length - 1])}，要想一下末班車。`);
@@ -1473,7 +1474,7 @@
     const lis = $$('#dayBody .tlx > li');
     lis.forEach((li) => { li.classList.remove('past', 'now', 'next'); li.style.removeProperty('--p'); $('.now-tag', li).textContent = ''; });
     $$('.day-tab').forEach((b) => b.classList.toggle('today', +b.dataset.i === tripDayIndex()));
-    if (tripDayIndex() !== curDay || !lis.length) return;
+    if (tripDayIndex() !== curDay || !lis.length || T.days[curDay].travel) return; // 旅行日跨時區，不標進行中
     const now = tokyoNow().min;
     const starts = lis.map((li) => (li.dataset.t === '' ? null : +li.dataset.t));
     let cur = -1;
