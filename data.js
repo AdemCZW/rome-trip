@@ -92,7 +92,7 @@ window.TRIP = {
         { t: '08:00', name: 'Pasticceria Regoli', it: '早餐：maritozzo 鮮奶油麵包', kind: 'food', lat: 41.89508, lng: 12.50189, note: '羅馬公認最好吃的 maritozzo 之一，配一杯 cappuccino（早上才喝）。週二休，週日有開。', tags: [['€2–5']] },
         { t: '08:45', name: '聖母大殿', it: 'Basilica di Santa Maria Maggiore', kind: 'sight', lat: 41.89756, lng: 12.49842, note: '羅馬四大特級宗座聖殿之一，免費入場、要遮肩過膝。<b>教宗方濟各的墓</b>在左側側廊（Cappella Paolina 和 Cappella Sforza 之間）。週日 10:00、12:00 主祭壇有彌撒，部分區域會限制參觀，所以早點去。⚠ 官網沒列開放時間，第三方資料約 07:00 開。', tags: [['免費'], ['約 45 min']] },
         { t: '09:45', name: '古羅馬廣場＋帕拉提諾山', it: 'Foro Romano & Palatino', kind: 'sight', lat: 41.89246, lng: 12.48533, note: '跟競技場<b>同一張 24h 票</b>，官網寫明可以排在競技場時段之前或之後，各入場一次；9:00 開門。從 Via dei Fori Imperiali 的入口進，先上帕拉提諾山看皇宮遺跡，再走下古羅馬廣場。沒有遮蔭，帶水，場內有 nasoni 飲水泉。12:30 前往競技場入口。', tags: [['同票'], ['約 2.5 h']] },
-        { t: '13:00', name: '羅馬競技場', it: 'Colosseo', kind: 'sight', lat: 41.89021, lng: 12.49223, note: '<b>13:00 時段入場</b>，官網建議提早 15 分鐘到競技場入口（Sperone Valadier，靠君士坦丁凱旋門那側）。實名制，帶護照核對姓名。11 月整個園區 16:30 關門、最後入場 15:30。', tags: [['€18 一般票'], ['€24 含地下層'], ['約 1.5 h']], book: { label: '官方訂票', url: 'https://ticketing.colosseo.it/en/categorie/singoli-1-8-persone/' } },
+        { t: '13:00', name: '羅馬競技場', it: 'Colosseo', kind: 'sight', lat: 41.89021, lng: 12.49223, note: '<b>13:00 時段入場</b>，官網建議提早 15 分鐘到競技場入口（Sperone Valadier，靠君士坦丁凱旋門那側）。實名制，帶護照核對姓名。11 月整個園區 16:30 關門、最後入場 15:30。', tags: [['已訂 13:00', 'info'], ['€18 一般票'], ['€24 含地下層'], ['約 1.5 h']], book: { label: '官方訂票', url: 'https://ticketing.colosseo.it/en/categorie/singoli-1-8-persone/' } },
         { t: '14:30', name: 'La Taverna dei Fori Imperiali', it: '遲一點的午餐：cacio e pepe、gricia', kind: 'food', lat: 41.89395, lng: 12.48943, note: 'Monti 區的家族 trattoria，cacio e pepe 會加檸檬皮。午餐供應到 15:00，<b>訂 14:30</b>（官網可線上訂），週二休。', tags: [['必訂位', 'bad'], ['€30–45']], book: { label: '訂位', url: 'https://www.latavernadeiforiimperiali.com/' } },
         { t: '15:45', name: '聖克萊門特教堂', it: 'Basilica di San Clemente', kind: 'sight', lat: 41.88935, lng: 12.49756, note: '隱藏版景點。一棟教堂疊三層歷史：12 世紀教堂、4 世紀教堂，再往下是 1 世紀羅馬房屋和密特拉神廟，地底還聽得到伏流的水聲。<b>地下層要先上官網預約</b>（週日 12:00–18:00，最後入場 17:30），參觀 30 分鐘、禁止拍照。', tags: [['€10'], ['需預約', 'warn'], ['隱藏景點', 'gem']], book: { label: '官方預約', url: 'https://www.basilicasanclemente.com/eng/booking/' } },
         { t: '16:35', name: '卡比托利歐山＋夕陽觀景', it: 'Piazza del Campidoglio', kind: 'sight', lat: 41.89338, lng: 12.48297, note: '從聖克萊門特走過來約 20 分鐘。米開朗基羅設計的廣場，從市政廳兩側往後走，就能從上方看整個古羅馬廣場。<b>11/8 日落 16:56</b>，天色到 17:25 左右都好看。', tags: [['免費'], ['夕陽', 'hot']] },
@@ -749,9 +749,4 @@ Object.assign(window.TRIP, {
   T.musts.unshift({ icon: '🏨', title: '住宿：Hotel Principe di Piemonte', text: 'Via Giovanni Giolitti 449（特米尼東側、Porta Maggiore 旁，離 Termini 約 1.2 公里、電車站 150 公尺）。3 星，Booking 8.4 分（2,077 則）。<b>24 小時櫃檯</b>，入住 14:00 起、晚到可以。住宿稅每人每晚 €6 現場付。 <a href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(H.q) + '&travelmode=walking" target="_blank" rel="noopener">導航到飯店 ↗</a>' });
   // 訂票頁：機場到飯店
   T.bookExtra.unshift({ when: '11/7 深夜', name: '機場 → 飯店', book: { label: '計程車固定價說明（羅馬市府）', url: 'https://www.comune.roma.it/web/it/scheda-servizi.page?contentId=INF48653', note: 'FCO → 市中心（Aurelian 城牆內）固定 €55，含行李、最多 4 人；或 Leonardo Express 到 Termini 再計程車。' } });
-})();
-
-/* ===== 重點標記：已訂好的票（2026-11-06）===== */
-(function () {
-  window.TRIP.days.forEach((d) => d.stops.forEach((s) => { if (s.name === '羅馬競技場') { s.key = 'ticket'; (s.tags ||= []).unshift(['已訂 13:00', 'info']); } }));
 })();
