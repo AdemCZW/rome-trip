@@ -376,6 +376,26 @@
     dayMap.closePopup();
     if (dayPts.length) dayMap.fitBounds(L.latLngBounds(dayPts.map((p) => [p.lat, p.lng])), { padding: [26, 26], maxZoom: 15 });
   }
+  /* 每站附近的甜點、小吃、咖啡、正餐（美食頁的店，步行 8 分鐘內） */
+  const FT = Object.fromEntries((T.foodTypes || []).map((t) => [t.k, t]));
+  const distM = (a, b) => {
+    const r = Math.PI / 180, x = (b.lat - a.lat) * r, y = (b.lng - a.lng) * r;
+    return 2 * 6371000 * Math.asin(Math.sqrt(Math.sin(x / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(y / 2) ** 2));
+  };
+  const plainTxt = (h) => String(h || '').replace(/<[^>]+>/g, '');
+  function nearFood(s) {
+    if (!s.lat || s.kind === 'move') return '';
+    const self = plainTxt(s.name + ' ' + (s.it || '')).toLowerCase();
+    const list = (T.food || []).filter((f) => f.lat && !self.includes(f.name.toLowerCase().split(/[（(]/)[0].trim()))
+      .map((f) => ({ f, raw: distM(s, f), m: distM(s, f) * 1.3 })).filter((x) => x.m <= 650 && x.raw > 40 && !self.includes(x.f.name.toLowerCase().split(' ')[0])).sort((a, b) => a.m - b.m).slice(0, 4);
+    if (!list.length) return '';
+    return `<div class="near"><div class="near-h">🍴 附近順便吃</div>${list.map(({ f, m }) => {
+      const t = FT[f.type] || {};
+      return `<a class="near-i" target="_blank" rel="noopener" href="${gmap(f.lat, f.lng, 'walking', f.q || `${f.name} ${f.addr || ''} Roma`)}" onclick="event.stopPropagation()" title="${esc(plainTxt(f.order))}">
+        <span class="ni-ic">${t.icon || '🍴'}</span><span class="ni-tx"><b>${esc(f.name)}</b><small>${esc(t.short || t.label || '')}・${esc(f.cat || '')}・走路約 ${Math.max(1, Math.round(m / 80))} 分${f.tag === 'gem' ? '・💎 隱藏版' : ''}</small></span></a>`;
+    }).join('')}</div>`;
+  }
+
   function renderDay(i) {
     curDay = i;
     $$('.day-tab').forEach((b) => b.classList.toggle('on', +b.dataset.i === i));
@@ -416,6 +436,7 @@
             <div class="nm">${s.name}</div>${s.it ? `<div class="it">${s.it}</div>` : ''}
             ${s.note ? `<div class="note clamp">${s.note}</div><button class="st-more" type="button" hidden>展開全文</button>` : ''}
             ${s.tags || s.lat || s.q || s.book ? `<div class="meta">${pills(s.tags)}<span class="go">${bookBtn(s.book)}${navBtn(s, s.mode || d.mode || 'walking')}</span></div>` : ''}
+            ${nearFood(s)}
           </div></li>`;
       }).join('')}</ol>`;
     $('#daySide').innerHTML = `<h3>${d.side.title}</h3>${list(d.side.items)}`;

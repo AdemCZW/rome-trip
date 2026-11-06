@@ -947,3 +947,13 @@ select.in { appearance: none; -webkit-appearance: none; }
 @media (prefers-reduced-motion: reduce) { .tlx-i.now .tlx-node { animation: none; } }
 /* 電腦版：右側地圖欄固定在天數列下方，不被蓋住 */
 @media (min-width: 961px) { .day-aside { top: calc(var(--top-h) + 84px); } }
+
+/* 每站附近順便吃 */
+.near { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.near-h { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+.near-i { display: flex; align-items: center; gap: 10px; padding: 7px 10px; margin-top: 4px; border-radius: 12px; background: color-mix(in srgb, var(--c, var(--accent)) 7%, transparent); color: inherit; text-decoration: none; }
+.near-i:hover { text-decoration: none; background: color-mix(in srgb, var(--c, var(--accent)) 14%, transparent); }
+.ni-ic { font-size: 18px; flex: none; }
+.ni-tx { display: grid; min-width: 0; }
+.ni-tx b { font-size: 13.5px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ni-tx small { font-size: 11.5px; color: var(--faint); }
