@@ -750,3 +750,8 @@ Object.assign(window.TRIP, {
   // 訂票頁：機場到飯店
   T.bookExtra.unshift({ when: '11/7 深夜', name: '機場 → 飯店', book: { label: '計程車固定價說明（羅馬市府）', url: 'https://www.comune.roma.it/web/it/scheda-servizi.page?contentId=INF48653', note: 'FCO → 市中心（Aurelian 城牆內）固定 €55，含行李、最多 4 人；或 Leonardo Express 到 Termini 再計程車。' } });
 })();
+
+/* ===== 重點標記：已訂好的票（2026-11-06）===== */
+(function () {
+  window.TRIP.days.forEach((d) => d.stops.forEach((s) => { if (s.name === '羅馬競技場') { s.key = 'ticket'; (s.tags ||= []).unshift(['已訂 13:00', 'info']); } }));
+})();

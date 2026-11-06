@@ -396,6 +396,17 @@
     }).join('')}</div>`;
   }
 
+  /* 重點標記：航班、住宿、已訂票的行程 */
+  function keyOf(s) {
+    const nm = plainTxt(s.name), all = nm + ' ' + plainTxt(s.note) + ' ' + JSON.stringify(s.tags || []);
+    const KM = { flight: ['✈️', '航班'], hotel: ['🏨', '住宿'], ticket: ['🎫', '已訂票'] };
+    if (s.key && KM[s.key]) return { k: s.key, icon: KM[s.key][0], label: KM[s.key][1] };
+    if (/起飛|抵達羅馬|抵達桃園|機場（IST）|報到、託運|FCO 第 3 航廈：/.test(nm)) return { k: 'flight', icon: '✈️', label: '航班' };
+    if (/入住|退房|拿行李/.test(nm)) return { k: 'hotel', icon: '🏨', label: '住宿' };
+    if (/已訂/.test(all)) return { k: 'ticket', icon: '🎫', label: '已訂票' };
+    return null;
+  }
+
   function renderDay(i) {
     curDay = i;
     $$('.day-tab').forEach((b) => b.classList.toggle('on', +b.dataset.i === i));
@@ -420,19 +431,24 @@
         <h2 class="h2">${d.title}</h2>
         <p>${d.summary}</p>
         ${(d.tags || []).length ? `<div class="di-tags">${pills(d.tags)}</div>` : ''}
+        ${(() => {
+          const ks = d.stops.map((s, k) => ({ s, k, key: keyOf(s) })).filter((x) => x.key);
+          return ks.length ? `<div class="di-keys"><div class="dk-h">今天一定要準時</div>${ks.map(({ s, k, key }) => `<button type="button" class="dk dk-${key.k}" data-k="${k}"><span class="dk-t">${s.t || ''}</span><span class="dk-i">${key.icon}</span><span class="dk-n">${plainTxt(s.name)}</span></button>`).join('')}</div>` : '';
+        })()}
         <div class="di-acts">
           ${route ? `<a class="btn primary" target="_blank" rel="noopener" href="${route}">➜ 整天導航</a>` : ''}
           <button class="btn" id="editDay" type="button">✏️ 編輯行程</button>
         </div>
       </div>
       <div id="dayCheck"></div>
-      <ol class="tlx">${d.stops.map((s) => {
+      <ol class="tlx">${d.stops.map((s, sk) => {
         const idx = s.lat ? ++n : 0;
+        const key = keyOf(s);
         const kind = { sight: '景點', food: '吃', move: '移動', shop: '逛' }[s.kind] || '';
-        return `<li class="tlx-i ${s.kind === 'move' ? 'mv' : ''}" style="--c:${c}" data-t="${toMin(s.t) ?? ''}" data-stay="${s.stay || ''}">
+        return `<li class="tlx-i ${s.kind === 'move' ? 'mv' : ''} ${key ? 'key key-' + key.k : ''}" id="stop-${sk}" style="--c:${c}" data-t="${toMin(s.t) ?? ''}" data-stay="${s.stay || ''}">
           <span class="tlx-node" aria-hidden="true"></span>
           <div class="stop ${s.kind || ''}" data-idx="${idx}">
-            <div class="st-head"><span class="st-time">${s.t || '--:--'}</span>${s.stay ? `<span class="st-dur">${fmtDur(s.stay)}</span>` : ''}<em class="now-tag"></em>${kind ? `<span class="st-kind">${idx ? `${idx} · ` : ''}${kind}</span>` : ''}</div>
+            <div class="st-head"><span class="st-time">${s.t || '--:--'}</span>${s.stay ? `<span class="st-dur">${fmtDur(s.stay)}</span>` : ''}<em class="now-tag"></em>${key ? `<span class="st-key">${key.icon} ${key.label}</span>` : ''}${kind ? `<span class="st-kind">${idx ? `${idx} · ` : ''}${kind}</span>` : ''}</div>
             <div class="nm">${s.name}</div>${s.it ? `<div class="it">${s.it}</div>` : ''}
             ${s.note ? `<div class="note clamp">${s.note}</div><button class="st-more" type="button" hidden>展開全文</button>` : ''}
             ${s.tags || s.lat || s.q || s.book ? `<div class="meta">${pills(s.tags)}<span class="go">${bookBtn(s.book)}${navBtn(s, s.mode || d.mode || 'walking')}</span></div>` : ''}
@@ -449,6 +465,11 @@
     }));
     $('#editDay').addEventListener('click', () => openEditor(i));
     renderCheck(i);
+    $$('#dayBody .dk').forEach((b) => b.addEventListener('click', () => {
+      const li = $(`#stop-${b.dataset.k}`); if (!li) return;
+      $('#plan').scrollTo({ top: li.offsetTop - 150, behavior: 'smooth' });
+      li.classList.remove('flash'); void li.offsetWidth; li.classList.add('flash');
+    }));
     markNow(true);
 
     if (!dayMap) dayMap = makeMap('dayMap');

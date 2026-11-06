@@ -957,3 +957,41 @@ select.in { appearance: none; -webkit-appearance: none; }
 .ni-tx { display: grid; min-width: 0; }
 .ni-tx b { font-size: 13.5px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ni-tx small { font-size: 11.5px; color: var(--faint); }
+
+/* ================= 重點標記：航班／住宿／已訂票 ================= */
+:root { --k-flight: #0a84ff; --k-hotel: #a2845e; --k-ticket: #ff9f0a; }
+.di-keys { margin-top: 12px; display: grid; gap: 6px; }
+.dk-h { font-size: 12px; font-weight: 800; color: var(--muted); letter-spacing: .04em; }
+.dk { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 12px; border: 0; border-radius: 12px; font: inherit; color: var(--text); text-align: left; cursor: pointer;
+  background: color-mix(in srgb, var(--kc) 14%, transparent); box-shadow: inset 3px 0 0 var(--kc); }
+.dk-flight { --kc: var(--k-flight); } .dk-hotel { --kc: var(--k-hotel); } .dk-ticket { --kc: var(--k-ticket); }
+.dk-t { font-family: var(--mono); font-weight: 800; font-size: 14px; color: var(--kc); min-width: 46px; }
+.dk-i { font-size: 16px; }
+.dk-n { font-size: 14px; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlx-i.key-flight { --kc: var(--k-flight); } .tlx-i.key-hotel { --kc: var(--k-hotel); } .tlx-i.key-ticket { --kc: var(--k-ticket); }
+.tlx-i.key .stop { border: 1.5px solid color-mix(in srgb, var(--kc) 70%, transparent); background: color-mix(in srgb, var(--kc) 9%, var(--glass-strong)); border-style: solid; }
+.tlx-i.key .tlx-node { width: 18px; height: 18px; left: 1px; top: 14px; background: var(--kc); box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px color-mix(in srgb, var(--kc) 40%, transparent); }
+.tlx-i.key .st-time { color: var(--kc); font-size: 15px; }
+.tlx-i.key .nm { font-size: 16.5px; font-weight: 750; }
+.st-key { font-size: 11px; font-weight: 800; color: #fff; background: var(--kc); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+.tlx-i.flash .stop { animation: keyFlash 1.2s ease-out; }
+@keyframes keyFlash { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--kc, var(--accent)) 70%, transparent); } 100% { box-shadow: 0 0 0 14px transparent; } }
+
+/* ================= 手機：更順（少用毛玻璃、少動畫、好點） ================= */
+@media (max-width: 820px) {
+  /* 大量卡片同時套毛玻璃是手機捲動卡頓的主因：內容卡改成實色半透明，只留頂部列與分頁列用毛玻璃 */
+  .card, .stop, .stat, .wx, .callout, .chk, .day-intro, .ed-row, .ex-item, .splitrow, .near-i {
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  }
+  .card, .stop, .stat, .wx, .chk, .day-intro { background: var(--glass-strong); box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+  .rv, .stop.rv { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .ambient { animation: none !important; }
+  .page { scroll-behavior: auto; }
+  /* 好點：按鈕和導航至少 40px 高 */
+  .navlink, .btn.sm, .near-i, .dk { min-height: 40px; }
+  .tlx .meta .go { width: 100%; justify-content: stretch; }
+  .tlx .meta .go > a { flex: 1; justify-content: center; }
+  .day-map { height: 190px; }
+  .tlx .note { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .tlx-i.flash .stop { animation: none; } }
